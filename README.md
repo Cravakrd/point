@@ -1,4 +1,4 @@
-
+<!DOCTYPE html>
 <html lang="ckb" dir="rtl">
 <head>
 <meta charset="UTF-8">
@@ -502,16 +502,26 @@ nav.tabbar{
     db.ref('users/' + key).once('value').then(function(snapshot) {
       if(snapshot.exists()) {
         var userData = snapshot.val();
+        
+        // ئەگەر پاسوۆرد لە داتابەیسدا هەبوو و هی ئێستا جیاواز بوو
         if(userData.pass && userData.pass !== pass) {
           showMsg(el.authMsg, "پاسوۆردەکە هەڵەیە! تکایە دڵنیابەوە.", false);
           el.loginBtn.disabled = false;
           el.loginBtn.textContent = "چوونەژوورەوە";
-          return;
+          return; // لێرەدا دەوەستێت و ڕێگە نادات بچێتە ژوورەوە
         }
+
+        // ئەگەر هەژمارەکە کۆن بوو و پاسوۆردی نەبوو، ئەم پاسوۆردە نوێیەی بۆ تۆمار دەکات
+        if(!userData.pass) {
+          userData.pass = pass;
+          db.ref('users/' + key).update({ pass: pass });
+        }
+
         currentUser = userData;
         currentUser.key = key;
         showMsg(el.authMsg, "بەخێربێیتەوە " + currentUser.name + "!", true);
       } else {
+        // ئەگەر ناوەکە بوونی نەبوو، یەکێکی نوێ دروست دەکات
         currentUser = { name: name, pass: pass, points: STARTING_POINTS, spins: 0 };
         db.ref('users/' + key).set(currentUser);
         currentUser.key = key;
@@ -602,10 +612,8 @@ nav.tabbar{
       currentUser.spins -= 1;
       if(seg.type === "points") { currentUser.points += seg.points; }
       
-      // Update user in firebase
       db.ref('users/' + currentUser.key).update({ points: currentUser.points, spins: currentUser.spins });
 
-      // Save spin result to history in firebase
       db.ref('spin_history').push({
         name: currentUser.name,
         result: seg.label,
@@ -653,7 +661,6 @@ nav.tabbar{
     goSection("leaderboard");
   });
 
-  // Listeners for Leaderboard and Admin Panel data
   db.ref('users').on('value', function(snapshot) {
     var users = snapshot.val() || {};
     var list = Object.keys(users).map(function(k){
@@ -700,10 +707,9 @@ nav.tabbar{
     }
   });
 
-  // Listen to Spin History
   db.ref('spin_history').limitToLast(20).on('value', function(snapshot) {
     var histories = snapshot.val() || {};
-    var keys = Object.keys(histories).reverse(); // تازەترینەکان لە سەرەوە بن
+    var keys = Object.keys(histories).reverse();
     
     el.adminSpinHistory.innerHTML = "";
     if(keys.length === 0){
@@ -718,7 +724,7 @@ nav.tabbar{
       row.innerHTML =
         '<div class="lb-name"><b>' + escapeHtml(h.name) + '</b><br><span style="font-size:11px; color:var(--text-dim);">' + (h.time || '') + '</span></div>' +
         '<div class="lb-pts" style="color:var(--yellow-2); font-size:13px;">' + escapeHtml(h.result) + '</div>';
-      el.adminSpinHistory.appendChild(adminRow || row);
+      el.adminSpinHistory.appendChild(row);
     });
   });
 
