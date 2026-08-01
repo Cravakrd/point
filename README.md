@@ -196,6 +196,17 @@ main{max-width:520px; margin:0 auto; padding:18px 16px 8px;}
 .lb-pts{font-size:13px; font-weight:800; color:var(--yellow-2); margin-left:6px;}
 .lb-empty{ text-align:center; color:var(--text-dim); font-size:13px; padding:20px 0;}
 
+.vip-badge {
+  background: linear-gradient(135deg, #ffc531, #f5a623);
+  color: #12160f;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 6px;
+  margin-right: 6px;
+  box-shadow: 0 0 8px rgba(255,197,49,0.5);
+}
+
 nav.tabbar{
   position:fixed; bottom:0; left:0; right:0; z-index:60;
   display:flex; justify-content:space-around; padding:9px 8px calc(9px + var(--safe-b));
@@ -238,7 +249,7 @@ nav.tabbar{
 
 <header class="topbar">
   <div class="brand">
-    <img src="crlogo.png" alt="CRAVA logo" onerror="this.style.display='none'">
+    <img src="cllogo.png" alt="CRAVA logo" onerror="this.style.display='none'">
     <div><div class="brand-sub">سۆران · فرێش جوس و فرایز</div></div>
   </div>
   <div class="points-pill" id="headerPoints">
@@ -284,7 +295,7 @@ nav.tabbar{
     <div class="card">
       <h3 class="card-title"><span class="dot"></span> بەکارهێنانی کۆد</h3>
       <p class="card-sub">نموونە: CRAVA-2026-A1 — هەر کۆدێک تەنها یەک جار بەکاردێت.</p>
-      <input id="codeInput" class="field" type="text" placeholder="CRAVA-2026-XX" style="text-transform:uppercase;">
+      <input id="codeInput" class="field" type="text" placeholder="کۆدی وەصڵ" style="text-transform:uppercase;">
       <div style="height:12px"></div>
       <button class="btn btn-green" id="redeemBtn">پشکنین و وەرگرتنی خاڵ</button>
       <div class="msg" id="codeMsg"></div>
@@ -377,97 +388,26 @@ nav.tabbar{
   firebase.initializeApp(firebaseConfig);
   const db = firebase.database();
 
- var VALID_CODES = [
-  "CRAVA9Xk2P7",
-  "8XkCRAVA3p7",
-  "1mQ5b9CRAVA",
-  "CRAVA7pX29k",
-  "4vQ9CRAVA3Xp2",
-  "Z9k2CRAVA6b9",
-  "CRAVA8pX57k1",
-  "2mQ94XCRAVA",
-  "CRAVA3v2P9k5",
-  "6XkCRAVA7b9p",
-  "1pQ2CRAVA5X8",
-  "CRAVA9b9X4k2",
-  "7Xk2p9CRAVA",
-  "CRAVA5vQ38k1",
-  "3mQ9CRAVA4Xp6",
-  "CRAVA8k2P7b9",
-  "2XkCRAVA9p5X",
-  "4pQ16b9CRAVA",
-  "CRAVA7vQ23k8",
-  "9mQ5CRAVA1Xp4",
-  "CRAVA6k2P8b3",
-  "5XkCRAVA2p7X",
-  "1vQ94b6CRAVA",
-  "CRAVA3pX89k2",
-  "8mQ1CRAVA5Xp7",
-  "CRAVA4k2P6b9",
-  "7XkCRAVA1p3X",
-  "2vQ58b4CRAVA",
-  "CRAVA9pX27k6",
-  "3kQ1CRAVA6Xp8",
-  "CRAVA5m2P9b1",
-  "1XkCRAVA4p2X",
-  "6vQ73b5CRAVA",
-  "CRAVA8pX92k4",
-  "4mQ6CRAVA7Xp1",
-  "CRAVA2k9P5b8",
-  "9XkCRAVA3p6X",
-  "5vQ12b7CRAVA",
-  "CRAVA7pX48k9",
-  "1kQ5CRAVA6Xp3",
-  "CRAVA8m2P4b7",
-  "3XkCRAVA9p1X",
-  "6vQ25b8CRAVA",
-  "CRAVA2pX67k3",
-  "9mQ4CRAVA1Xp8",
-  "CRAVA4k9P2b5",
-  "7XkCRAVA6p3X",
-  "8vQ19b2CRAVA",
-  "CRAVA5pX74k6",
-  "3kQ2CRAVA8Xp1",
-  "CRAVA6m9P7b4",
-  "1XkCRAVA2p9X",
-  "4vQ53b6CRAVA",
-  "CRAVA9pX81k7",
-  "2kQ6CRAVA5Xp9",
-  "CRAVA7m2P3b8",
-  "8XkCRAVA4p1X",
-  "1vQ76b2CRAVA",
-  "CRAVA3pX59k4",
-  "6kQ1CRAVA2Xp7",
-  "CRAVA9m9P8b3",
-  "4XkCRAVA7p6X",
-  "5vQ21b9CRAVA",
-  "CRAVA8pX32k5",
-  "1kQ4CRAVA9Xp6",
-  "CRAVA3m2P5b7",
-  "7XkCRAVA1p8X",
-  "2vQ84b3CRAVA",
-  "CRAVA6pX97k2",
-  "5kQ3CRAVA1Xp4",
-  "CRAVA8m9P6b2",
-  "9XkCRAVA2p5X",
-  "3vQ78b1CRAVA",
-  "CRAVA4pX19k6",
-  "7kQ2CRAVA3Xp8",
-  "CRAVA1m2P4b9",
-  "6XkCRAVA9p7X",
-  "2vQ45b6CRAVA",
-  "CRAVA8pX23k1",
-  "9kQ5CRAVA7Xp4",
-  "CRAVA2m9P1b8",
-  "5XkCRAVA6p2X",
-  "4vQ18b7CRAVA",
-  "CRAVA3pX95k2",
-  "6kQ8CRAVA2Xp3",
-  "CRAVA7m2P9b6",
-  "1XkCRAVA4p5X",
-  "8vQ23b9CRAVA",
-  "CRAVA5pX41k7"
-];
+  var VALID_CODES = [
+    "CRAVA9Xk2P7","8XkCRAVA3p7","1mQ5b9CRAVA","CRAVA7pX29k","4vQ9CRAVA3Xp2",
+    "Z9k2CRAVA6b9","CRAVA8pX57k1","2mQ94XCRAVA","CRAVA3v2P9k5","6XkCRAVA7b9p",
+    "1pQ2CRAVA5X8","CRAVA9b9X4k2","7Xk2p9CRAVA","CRAVA5vQ38k1","3mQ9CRAVA4Xp6",
+    "CRAVA8k2P7b9","2XkCRAVA9p5X","4pQ16b9CRAVA","CRAVA7vQ23k8","9mQ5CRAVA1Xp4",
+    "CRAVA6k2P8b3","5XkCRAVA2p7X","1vQ94b6CRAVA","CRAVA3pX89k2","8mQ1CRAVA5Xp7",
+    "CRAVA4k2P6b9","7XkCRAVA1p3X","2vQ58b4CRAVA","CRAVA9pX27k6","3kQ1CRAVA6Xp8",
+    "CRAVA5m2P9b1","1XkCRAVA4p2X","6vQ73b5CRAVA","CRAVA8pX92k4","4mQ6CRAVA7Xp1",
+    "CRAVA2k9P5b8","9XkCRAVA3p6X","5vQ12b7CRAVA","CRAVA7pX48k9","1kQ5CRAVA6Xp3",
+    "CRAVA8m2P4b7","3XkCRAVA9p1X","6vQ25b8CRAVA","CRAVA2pX67k3","9mQ4CRAVA1Xp8",
+    "CRAVA4k9P2b5","7XkCRAVA6p3X","8vQ19b2CRAVA","CRAVA5pX74k6","3kQ2CRAVA8Xp1",
+    "CRAVA6m9P7b4","1XkCRAVA2p9X","4vQ53b6CRAVA","CRAVA9pX81k7","2kQ6CRAVA5Xp9",
+    "CRAVA7m2P3b8","8XkCRAVA4p1X","1vQ76b2CRAVA","CRAVA3pX59k4","6kQ1CRAVA2Xp7",
+    "CRAVA9m9P8b3","4XkCRAVA7p6X","5vQ21b9CRAVA","CRAVA8pX32k5","1kQ4CRAVA9Xp6",
+    "CRAVA3m2P5b7","7XkCRAVA1p8X","2vQ84b3CRAVA","CRAVA6pX97k2","5kQ3CRAVA1Xp4",
+    "CRAVA8m9P6b2","9XkCRAVA2p5X","3vQ78b1CRAVA","CRAVA4pX19k6","7kQ2CRAVA3Xp8",
+    "CRAVA1m2P4b9","6XkCRAVA9p7X","2vQ45b6CRAVA","CRAVA8pX23k1","9kQ5CRAVA7Xp4",
+    "2mQ9P1b8","5XkCRAVA6p2X","4vQ18b7CRAVA","CRAVA3pX95k2","6kQ8CRAVA2Xp3",
+    "7m2P9b6","1XkCRAVA4p5X","8vQ23b9CRAVA","CRAVA5pX41k7"
+  ];
   var CODE_REWARD_POINTS = 100;
   var STARTING_POINTS = 10;
   var SESSION_KEY = "crava_session_v1";
@@ -592,15 +532,13 @@ nav.tabbar{
       if(snapshot.exists()) {
         var userData = snapshot.val();
         
-        // ئەگەر پاسوۆرد لە داتابەیسدا هەبوو و هی ئێستا جیاواز بوو
         if(userData.pass && userData.pass !== pass) {
           showMsg(el.authMsg, "پاسوۆردەکە هەڵەیە! تکایە دڵنیابەوە.", false);
           el.loginBtn.disabled = false;
           el.loginBtn.textContent = "چوونەژوورەوە";
-          return; // لێرەدا دەوەستێت و ڕێگە نادات بچێتە ژوورەوە
+          return;
         }
 
-        // ئەگەر هەژمارەکە کۆن بوو و پاسوۆردی نەبوو، ئەم پاسوۆردە نوێیەی بۆ تۆمار دەکات
         if(!userData.pass) {
           userData.pass = pass;
           db.ref('users/' + key).update({ pass: pass });
@@ -610,7 +548,6 @@ nav.tabbar{
         currentUser.key = key;
         showMsg(el.authMsg, "بەخێربێیتەوە " + currentUser.name + "!", true);
       } else {
-        // ئەگەر ناوەکە بوونی نەبوو، یەکێکی نوێ دروست دەکات
         currentUser = { name: name, pass: pass, points: STARTING_POINTS, spins: 0 };
         db.ref('users/' + key).set(currentUser);
         currentUser.key = key;
@@ -767,9 +704,14 @@ nav.tabbar{
         var row = document.createElement("div");
         row.className = "lb-row" + (idx < 3 ? " " + rankClass[idx] : "") + (currentUser && u.key === currentUser.key ? " me" : "");
         var rankContent = idx < 3 ? rankBadge[idx] : (idx+1);
+        
+        var isVip = u.points >= 1000;
+        var vipBadgeHtml = isVip ? '<span class="vip-badge">⭐ VIP</span>' : '';
+        
+        // ئەگەر گەیشتە ١٠٠٠ خاڵ، پەیامی دیارییەکەی پیشان دەدەین (تەنها بۆ خودی بەکارهێنەرەکە ئەگەر لەوژوورەدا بێت یان لە لیستی پێشەنگەکان)
         row.innerHTML =
           '<div class="lb-rank">' + rankContent + '</div>' +
-          '<div class="lb-name">' + escapeHtml(u.name) + '</div>' +
+          '<div class="lb-name">' + escapeHtml(u.name) + vipBadgeHtml + '</div>' +
           '<div class="lb-pts">' + u.points + ' خاڵ</div>';
         el.leaderboardList.appendChild(row);
       });
@@ -816,6 +758,28 @@ nav.tabbar{
       el.adminSpinHistory.appendChild(row);
     });
   });
+
+  // پشکنینی گەیشتن بە ١٠٠٠ خاڵ بۆ دیارییەکەی
+  function checkVipReward(){
+    if(!currentUser) return;
+    if(currentUser.points >= 1000 && !currentUser.vipRewarded){
+      currentUser.vipRewarded = true;
+      db.ref('users/' + currentUser.key).update({ vipRewarded: true });
+      
+      // پیشاندانی پەزیرۆبایی و دیارییەکە
+      el.resultEmoji.textContent = "👑";
+      el.resultTitle.textContent = "پیرۆزە! گەیشتیتە ١٠٠٠ خاڵ!";
+      el.resultSub.textContent = "تۆ بوویتە VIP! دیارییەکەی ئێستا بردتەوە: (١ شەربەتی فرێش یان ١ فرایزی فرێش) بە دڵی خۆت! ئەم پەیامە پیشانی کارمەند بدە.";
+      el.resultOverlay.classList.add("show");
+    }
+  }
+
+  // کاتێک خاڵەکان نوێ دەبنەوە، پشکنینەکە دەکەین
+  var originalRefresh = refreshUserUI;
+  refreshUserUI = function(){
+    originalRefresh();
+    checkVipReward();
+  };
 
   function escapeHtml(s){
     return String(s).replace(/[&<>"']/g, function(c){
