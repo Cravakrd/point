@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
 <title>CRAVA | کرافا</title>
 
-<!-- Firebase SDKs (Compat Version for simple HTML/JS) -->
+<!-- Firebase SDKs -->
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 
@@ -44,12 +44,9 @@ body{
 
 ::selection{background:var(--yellow); color:#111;}
 button{font-family:inherit;}
-
-/* ---------- Scrollbar ---------- */
 ::-webkit-scrollbar{width:6px;}
 ::-webkit-scrollbar-thumb{background:var(--green-light); border-radius:10px;}
 
-/* ---------- Header ---------- */
 header.topbar{
   position:sticky; top:0; z-index:50;
   display:flex; align-items:center; justify-content:space-between;
@@ -64,9 +61,7 @@ header.topbar{
   height:42px; width:auto; object-fit:contain;
   filter:drop-shadow(0 0 10px rgba(255,197,49,0.35)) drop-shadow(0 0 18px rgba(46,139,79,0.25));
 }
-.brand-sub{
-  font-size:10px; color:var(--text-dim); letter-spacing:1px; margin-top:2px;
-}
+.brand-sub{ font-size:10px; color:var(--text-dim); letter-spacing:1px; margin-top:2px; }
 .points-pill{
   display:flex; align-items:center; gap:6px;
   background:linear-gradient(145deg, #1a231d, #10160f);
@@ -77,28 +72,14 @@ header.topbar{
 }
 .points-pill svg{width:16px; height:16px;}
 
-/* ---------- Layout ---------- */
 main{max-width:520px; margin:0 auto; padding:18px 16px 8px;}
 .hero{
-  position:relative;
-  border-radius: var(--radius);
-  padding:26px 20px;
-  margin-bottom:20px;
-  background:
-    linear-gradient(135deg, rgba(46,139,79,0.25), rgba(255,197,49,0.06) 60%),
-    linear-gradient(160deg, var(--charcoal-3), var(--charcoal-2));
+  position:relative; border-radius: var(--radius); padding:26px 20px; margin-bottom:20px;
+  background: linear-gradient(135deg, rgba(46,139,79,0.25), rgba(255,197,49,0.06) 60%), linear-gradient(160deg, var(--charcoal-3), var(--charcoal-2));
   border:1px solid rgba(255,197,49,0.18);
   box-shadow: 0 16px 40px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.04);
-  overflow:hidden;
-  text-align:center;
+  overflow:hidden; text-align:center;
 }
-.hero::before{
-  content:"";
-  position:absolute; inset:-40% -10% auto -10%; height:160%;
-  background: conic-gradient(from 180deg, rgba(255,197,49,0.10), transparent 30%, rgba(46,139,79,0.14), transparent 70%);
-  animation: swirl 14s linear infinite;
-}
-@keyframes swirl{ to{ transform:rotate(360deg);} }
 .hero h1{
   position:relative; margin:0 0 6px; font-size:26px; letter-spacing:.5px;
   background:linear-gradient(90deg, var(--yellow-2), #ffe08a, var(--yellow-2));
@@ -106,28 +87,17 @@ main{max-width:520px; margin:0 auto; padding:18px 16px 8px;}
 }
 .hero p{position:relative; margin:0; color:var(--text-dim); font-size:13.5px; line-height:1.7;}
 
-/* ---------- Card base (3D) ---------- */
 .card{
-  position:relative;
-  background:linear-gradient(160deg, var(--charcoal-3), var(--card));
-  border-radius:var(--radius);
-  padding:18px;
-  margin-bottom:16px;
+  position:relative; background:linear-gradient(160deg, var(--charcoal-3), var(--card));
+  border-radius:var(--radius); padding:18px; margin-bottom:16px;
   border:1px solid rgba(255,255,255,0.06);
-  box-shadow:
-    0 1px 0 rgba(255,255,255,0.06) inset,
-    0 14px 30px rgba(0,0,0,0.55),
-    0 2px 0 rgba(0,0,0,0.6);
-  transition: transform .25s ease, box-shadow .25s ease;
+  box-shadow: 0 1px 0 rgba(255,255,255,0.06) inset, 0 14px 30px rgba(0,0,0,0.55), 0 2px 0 rgba(0,0,0,0.6);
 }
-.card:active{ transform:scale(0.99); }
 .card-title{
-  display:flex; align-items:center; gap:8px;
-  font-size:15px; font-weight:800; margin:0 0 4px; color:var(--text);
+  display:flex; align-items:center; gap:8px; font-size:15px; font-weight:800; margin:0 0 4px; color:var(--text);
 }
 .card-title .dot{
-  width:8px; height:8px; border-radius:50%;
-  background:var(--yellow); box-shadow:0 0 10px var(--yellow), 0 0 2px var(--yellow);
+  width:8px; height:8px; border-radius:50%; background:var(--yellow); box-shadow:0 0 10px var(--yellow);
 }
 .card-sub{color:var(--text-dim); font-size:12.5px; margin:0 0 14px; line-height:1.6;}
 
@@ -136,7 +106,6 @@ main{max-width:520px; margin:0 auto; padding:18px 16px 8px;}
   background:#0f1512; border:1px solid rgba(255,255,255,0.08);
   color:var(--text); font-size:15px; outline:none;
   box-shadow: inset 0 2px 6px rgba(0,0,0,0.5);
-  transition:border-color .2s, box-shadow .2s;
 }
 .field:focus{ border-color:var(--yellow); box-shadow:inset 0 2px 6px rgba(0,0,0,0.5), 0 0 0 3px rgba(255,197,49,0.18);}
 .field::placeholder{color:#5f6d64;}
@@ -144,53 +113,36 @@ main{max-width:520px; margin:0 auto; padding:18px 16px 8px;}
 .btn{
   width:100%; border:none; cursor:pointer;
   padding:14px 18px; border-radius:14px; font-weight:800; font-size:15px;
-  letter-spacing:.3px;
-  transition: transform .15s ease, filter .2s ease, box-shadow .2s ease;
+  transition: transform .15s ease, filter .2s ease;
 }
 .btn:active{ transform:translateY(2px) scale(.985); }
 .btn-primary{
-  color:#0c1310;
-  background:linear-gradient(145deg, var(--yellow-2), var(--yellow));
-  box-shadow: 0 10px 22px rgba(255,166,35,0.35), inset 0 1px 0 rgba(255,255,255,0.5), inset 0 -3px 6px rgba(0,0,0,0.15);
-}
-.btn-primary:disabled{ filter:grayscale(.6) brightness(.7); cursor:not-allowed; box-shadow:none;}
-.btn-outline{
-  color:var(--green-light);
-  background:transparent;
-  border:1.5px solid rgba(46,139,79,0.55);
+  color:#0c1310; background:linear-gradient(145deg, var(--yellow-2), var(--yellow));
+  box-shadow: 0 10px 22px rgba(255,166,35,0.35);
 }
 .btn-green{
-  color:#eafff0;
-  background:linear-gradient(145deg, var(--green-light), var(--green));
-  box-shadow: 0 10px 22px rgba(31,107,58,0.45), inset 0 1px 0 rgba(255,255,255,0.15);
+  color:#eafff0; background:linear-gradient(145deg, var(--green-light), var(--green));
+  box-shadow: 0 10px 22px rgba(31,107,58,0.45);
 }
-.btn-row{display:flex; gap:10px; margin-top:6px;}
+.btn-danger{
+  color:#fff; background:linear-gradient(145deg, #e2544a, #b33930);
+  padding:8px 12px; font-size:12px; border-radius:10px; width:auto;
+}
 .msg{
-  margin-top:10px; font-size:13px; padding:10px 12px; border-radius:10px;
-  border:1px solid transparent; display:none;
+  margin-top:10px; font-size:13px; padding:10px 12px; border-radius:10px; border:1px solid transparent; display:none;
 }
 .msg.show{display:block;}
 .msg.ok{ background:rgba(46,139,79,0.15); color:#8de5a8; border-color:rgba(46,139,79,0.4);}
 .msg.err{ background:rgba(226,84,74,0.14); color:#ff9d94; border-color:rgba(226,84,74,0.4);}
 
-/* ---------- User bar ---------- */
-.userbar{
-  display:flex; align-items:center; justify-content:space-between; gap:10px;
-  margin-bottom:16px;
-}
+.userbar{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:16px; }
 .userchip{
-  display:flex; align-items:center; gap:10px;
-  background:linear-gradient(145deg, var(--charcoal-3), var(--card));
-  border:1px solid rgba(255,255,255,0.07);
-  border-radius:16px; padding:10px 14px; flex:1;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.45);
+  display:flex; align-items:center; gap:10px; background:linear-gradient(145deg, var(--charcoal-3), var(--card));
+  border:1px solid rgba(255,255,255,0.07); border-radius:16px; padding:10px 14px; flex:1;
 }
 .avatar{
-  width:38px; height:38px; border-radius:50%; flex:none;
-  display:flex; align-items:center; justify-content:center;
-  font-weight:800; font-size:15px; color:#0c1310;
-  background:linear-gradient(145deg, var(--yellow-2), var(--green-light));
-  box-shadow:0 0 0 3px rgba(255,197,49,0.15);
+  width:38px; height:38px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+  font-weight:800; font-size:15px; color:#0c1310; background:linear-gradient(145deg, var(--yellow-2), var(--green-light));
 }
 .userchip .uname{font-weight:700; font-size:14px;}
 .userchip .upts{font-size:11.5px; color:var(--text-dim);}
@@ -199,7 +151,6 @@ main{max-width:520px; margin:0 auto; padding:18px 16px 8px;}
   border-radius:12px; padding:9px 12px; font-size:12px; font-weight:700; cursor:pointer;
 }
 
-/* ---------- Wheel ---------- */
 .wheel-wrap{
   position:relative; width:min(78vw, 300px); aspect-ratio:1/1; margin:6px auto 18px;
   filter: drop-shadow(0 18px 30px rgba(0,0,0,0.6));
@@ -209,133 +160,87 @@ main{max-width:520px; margin:0 auto; padding:18px 16px 8px;}
   width:0; height:0; z-index:5;
   border-left:14px solid transparent; border-right:14px solid transparent;
   border-top:24px solid var(--yellow-2);
-  filter: drop-shadow(0 3px 6px rgba(0,0,0,0.6)) drop-shadow(0 0 8px var(--yellow-glow));
 }
 .wheel-ring{
   position:absolute; inset:-8px; border-radius:50%;
   background:conic-gradient(var(--yellow-2), var(--green-light), var(--yellow-2), var(--green-light), var(--yellow-2), var(--green-light), var(--yellow-2));
-  box-shadow: 0 0 25px var(--yellow-glow), 0 0 40px var(--green-glow);
 }
 .wheel{
-  position:absolute; inset:6px; border-radius:50%;
-  overflow:hidden;
-  border:4px solid #0c110d;
+  position:absolute; inset:6px; border-radius:50%; overflow:hidden; border:4px solid #0c110d;
   transition: transform 4.2s cubic-bezier(.14,.85,.15,1);
-  box-shadow: inset 0 0 30px rgba(0,0,0,0.55), 0 0 0 2px rgba(255,255,255,0.05);
-}
-.wheel-seg{
-  position:absolute; inset:0;
-  clip-path: polygon(50% 50%, 100% 0%, 100% 100%);
 }
 .wheel-label {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 95px;
-  text-align: center;
-  font-size: 13px;
-  font-weight: 800;
-  z-index: 10;
+  position: absolute; top: 50%; left: 50%; width: 95px; text-align: center; font-size: 13px; font-weight: 800; z-index: 10;
 }
 .wheel-hub{
   position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
   width:22%; height:22%; border-radius:50%; z-index:4;
   background:radial-gradient(circle at 35% 30%, #ffe08a, var(--yellow) 60%, #c97e00 100%);
-  box-shadow:0 0 0 4px var(--charcoal), 0 0 18px rgba(255,197,49,0.6), inset 0 -4px 8px rgba(0,0,0,0.35);
   display:flex; align-items:center; justify-content:center;
 }
 .wheel-hub span{font-size:16px;}
-
 .spin-hint{ text-align:center; color:var(--text-dim); font-size:12.5px; margin-bottom:10px; }
 
-/* ---------- Leaderboard ---------- */
 .lb-row{
-  display:flex; align-items:center; gap:12px;
-  padding:11px 10px; border-radius:14px;
-  background:rgba(255,255,255,0.02);
-  margin-bottom:8px;
-  border:1px solid rgba(255,255,255,0.04);
+  display:flex; align-items:center; gap:10px; padding:11px 10px; border-radius:14px;
+  background:rgba(255,255,255,0.02); margin-bottom:8px; border:1px solid rgba(255,255,255,0.04);
 }
 .lb-rank{
-  width:30px; height:30px; border-radius:10px; flex:none;
-  display:flex; align-items:center; justify-content:center;
-  font-weight:800; font-size:13px; color:var(--text-dim);
-  background:rgba(255,255,255,0.04);
+  width:30px; height:30px; border-radius:10px; flex:none; display:flex; align-items:center; justify-content:center;
+  font-weight:800; font-size:13px; color:var(--text-dim); background:rgba(255,255,255,0.04);
 }
-.lb-row.gold .lb-rank{ background:linear-gradient(145deg,#ffe08a,#d69b1f); color:#3a2a00; box-shadow:0 0 14px rgba(255,197,49,0.55);}
-.lb-row.silver .lb-rank{ background:linear-gradient(145deg,#eef3f1,#a9b4b0); color:#22302a; box-shadow:0 0 12px rgba(200,210,205,0.4);}
-.lb-row.bronze .lb-rank{ background:linear-gradient(145deg,#e0a066,#8a5427); color:#301c07; box-shadow:0 0 12px rgba(224,160,102,0.35);}
+.lb-row.gold .lb-rank{ background:linear-gradient(145deg,#ffe08a,#d69b1f); color:#3a2a00;}
+.lb-row.silver .lb-rank{ background:linear-gradient(145deg,#eef3f1,#a9b4b0); color:#22302a;}
+.lb-row.bronze .lb-rank{ background:linear-gradient(145deg,#e0a066,#8a5427); color:#301c07;}
 .lb-name{flex:1; font-size:13.5px; font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
-.lb-pts{font-size:13px; font-weight:800; color:var(--yellow-2);}
-.lb-row.me{ border-color:rgba(255,197,49,0.5); box-shadow:0 0 0 1px rgba(255,197,49,0.25) inset;}
+.lb-pts{font-size:13px; font-weight:800; color:var(--yellow-2); margin-left:6px;}
 .lb-empty{ text-align:center; color:var(--text-dim); font-size:13px; padding:20px 0;}
 
-/* ---------- Bottom nav ---------- */
 nav.tabbar{
   position:fixed; bottom:0; left:0; right:0; z-index:60;
-  display:flex; justify-content:space-around;
-  padding:9px 8px calc(9px + var(--safe-b));
+  display:flex; justify-content:space-around; padding:9px 8px calc(9px + var(--safe-b));
   background:linear-gradient(0deg, rgba(9,13,11,0.98), rgba(13,18,16,0.9));
-  border-top:1px solid rgba(255,197,49,0.15);
-  backdrop-filter:blur(10px);
-  box-shadow:0 -8px 24px rgba(0,0,0,0.5);
+  border-top:1px solid rgba(255,197,49,0.15); backdrop-filter:blur(10px);
 }
 .tab-btn{
   background:none; border:none; color:var(--text-dim);
   display:flex; flex-direction:column; align-items:center; gap:3px;
-  font-size:10.5px; font-weight:700; padding:6px 14px; border-radius:12px;
-  cursor:pointer; transition:color .2s, transform .15s;
+  font-size:10.5px; font-weight:700; padding:6px 14px; border-radius:12px; cursor:pointer;
 }
 .tab-btn svg{width:21px; height:21px;}
 .tab-btn.active{ color:var(--yellow-2); }
-.tab-btn.active svg{ filter:drop-shadow(0 0 6px var(--yellow-glow)); }
-.tab-btn:active{ transform:scale(.92); }
 
 .section{display:none;}
 .section.active{display:block; animation:fadeUp .35s ease;}
 @keyframes fadeUp{ from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);} }
-
-.badge{
-  display:inline-block; font-size:10.5px; font-weight:800; padding:3px 9px; border-radius:20px;
-  background:rgba(46,139,79,0.2); color:#8de5a8; border:1px solid rgba(46,139,79,0.4);
-  margin-bottom:10px;
-}
 .codes-note{ font-size:11px; color:var(--text-dim); margin-top:10px; line-height:1.7; }
 
-/* toast for wheel result */
 .result-overlay{
-  position:fixed; inset:0; z-index:100; display:none;
-  align-items:center; justify-content:center;
-  background:rgba(6,9,7,0.75); backdrop-filter:blur(4px);
-  padding:20px;
+  position:fixed; inset:0; z-index:100; display:none; align-items:center; justify-content:center;
+  background:rgba(6,9,7,0.75); backdrop-filter:blur(4px); padding:20px;
 }
 .result-overlay.show{ display:flex; }
 .result-card{
-  width:100%; max-width:340px; text-align:center;
-  background:linear-gradient(160deg, var(--charcoal-3), var(--card));
-  border:1px solid rgba(255,197,49,0.35);
-  border-radius:22px; padding:30px 24px 26px;
-  box-shadow:0 25px 60px rgba(0,0,0,0.6), 0 0 40px rgba(255,197,49,0.15);
-  animation: pop .4s cubic-bezier(.2,1.4,.4,1);
+  width:100%; max-width:340px; text-align:center; background:linear-gradient(160deg, var(--charcoal-3), var(--card));
+  border:1px solid rgba(255,197,49,0.35); border-radius:22px; padding:30px 24px 26px;
 }
-@keyframes pop{ from{transform:scale(.8); opacity:0;} to{transform:scale(1); opacity:1;} }
 .result-emoji{ font-size:46px; margin-bottom:6px; }
 .result-title{ font-size:19px; font-weight:800; margin:0 0 6px; color:var(--yellow-2); }
 .result-sub{ font-size:13px; color:var(--text-dim); margin:0 0 18px; }
 
-@media (min-width:540px){
-  main{padding-top:26px;}
+/* Admin link button hidden at bottom */
+.admin-trigger {
+  text-align: center; margin-top: 30px; font-size: 11px; color: var(--text-dim); cursor: pointer; opacity: 0.5;
 }
+.admin-trigger:hover { opacity: 1; color: var(--yellow); }
 </style>
 </head>
 <body>
 
 <header class="topbar">
   <div class="brand">
-    <img src="crlogo.jpg" alt="CRAVA logo">
-    <div>
-      <div class="brand-sub">سۆران · فرێش جوس و فرایز</div>
-    </div>
+    <img src="crlogo.png" alt="CRAVA logo" onerror="this.style.display='none'">
+    <div><div class="brand-sub">سۆران · فرێش جوس و فرایز</div></div>
   </div>
   <div class="points-pill" id="headerPoints">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 2l2.6 6.6L22 9.2l-5.4 4.6L18.2 21 12 17l-6.2 4 1.6-7.2L2 9.2l7.4-.6z"/></svg>
@@ -344,17 +249,15 @@ nav.tabbar{
 </header>
 
 <main>
-
-  <!-- ===================== AUTH SECTION ===================== -->
+  <!-- AUTH -->
   <section class="section" id="section-auth">
     <div class="hero">
       <h1>بەخێربێیت بۆ CRAVA</h1>
-      <p>ناوت یان ئایدی ئینستاگرامت بنووسە بۆ چوونەژوورەوە یان دروستکردنی هەژمار، خاڵ کۆبکەرەوە و خەڵاتی گەرمە بەدەستبهێنە.</p>
+      <p>ناوت یان ئایدی ئینستاگرامت بنووسە بۆ چوونەژوورەوە، خاڵ کۆبکەرەوە و خەڵاتی گەرمە بەدەستبهێنە.</p>
     </div>
-
     <div class="card">
       <h3 class="card-title"><span class="dot"></span> چوونەژوورەوە / تۆمارکردن</h3>
-      <p class="card-sub">ناوی تۆ ناتوانرێت دووبارە بێت — ئەگەر پێشتر تۆمارکراوی، خاڵەکانت پارێزراون.</p>
+      <p class="card-sub">ناوی تۆ ناتوانرێت دووبارە بیت — ئەگەر پێشتر تۆمارکراوی، خاڵەکانت پارێزراون.</p>
       <input id="nameInput" class="field" type="text" placeholder="ناو یان @یوزەری ئینستاگرام" maxlength="30">
       <div style="height:12px"></div>
       <button class="btn btn-primary" id="loginBtn">چوونەژوورەوە</button>
@@ -362,7 +265,7 @@ nav.tabbar{
     </div>
   </section>
 
-  <!-- ===================== HOME / CODE SECTION ===================== -->
+  <!-- HOME -->
   <section class="section" id="section-home">
     <div class="userbar">
       <div class="userchip">
@@ -374,12 +277,10 @@ nav.tabbar{
       </div>
       <button class="logout-btn" id="logoutBtn">دەرچوون</button>
     </div>
-
     <div class="hero" style="padding:22px 18px;">
       <h1 style="font-size:20px;">کۆدی وەصڵ داخڵ بکە</h1>
       <p>پاش کڕینت، کۆدی سەر وەصڵەکەت بنووسە بۆ بەدەستهێنانی خاڵ و کردنەوەی چەرخی خۆشییەکان 🎡</p>
     </div>
-
     <div class="card">
       <h3 class="card-title"><span class="dot"></span> بەکارهێنانی کۆد</h3>
       <p class="card-sub">نموونە: CRAVA-2026-A1 — هەر کۆدێک تەنها یەک جار بەکاردێت.</p>
@@ -391,33 +292,43 @@ nav.tabbar{
     </div>
   </section>
 
-  <!-- ===================== WHEEL SECTION ===================== -->
+  <!-- WHEEL -->
   <section class="section" id="section-wheel">
     <div class="card" style="text-align:center;">
       <h3 class="card-title" style="justify-content:center;"><span class="dot"></span> چەرخی خۆشییەکانی CRAVA</h3>
       <p class="card-sub" id="wheelInfo">بۆ خستنەکار، سەرەتا کۆدی وەصڵێکی دروست بنووسە.</p>
-
       <div class="wheel-wrap">
         <div class="pointer"></div>
         <div class="wheel-ring"></div>
         <div class="wheel" id="wheelEl"></div>
         <div class="wheel-hub"><span>🍟</span></div>
       </div>
-
       <div class="spin-hint" id="spinCount">جەخماوی بەردەست: <b id="spinsLeft">0</b></div>
       <button class="btn btn-primary" id="spinBtn" disabled>🎡 سوڕاندنی چەرخ</button>
     </div>
   </section>
 
-  <!-- ===================== LEADERBOARD SECTION ===================== -->
+  <!-- LEADERBOARD -->
   <section class="section" id="section-leaderboard">
     <div class="card">
       <h3 class="card-title"><span class="dot"></span> پێشەنگەکان</h3>
       <p class="card-sub">لیستی خاڵترین بەکارهێنەرانی CRAVA — بە شێوەی ڕاستەوخۆ نوێ دەبێتەوە.</p>
       <div id="leaderboardList"></div>
     </div>
+    <!-- Hidden Admin Trigger Button -->
+    <div class="admin-trigger" id="openAdminBtn">🔐 بەڕێوەبەر (Admin)</div>
   </section>
 
+  <!-- ADMIN SECTION -->
+  <section class="section" id="section-admin">
+    <div class="card">
+      <h3 class="card-title"><span class="dot"></span> بەڕێوەبردنی سیستەم (ئەدمین)</h3>
+      <p class="card-sub">لێرەدا دەتوانیت هەر بەکارهێنەرێک کە بتهەوێت بیسڕیتەوە.</p>
+      <div id="adminList"></div>
+      <div style="height:14px"></div>
+      <button class="btn btn-primary" id="backToAppBtn">گەڕانەوە بۆ سایتەکە</button>
+    </div>
+  </section>
 </main>
 
 <nav class="tabbar" id="tabbar" style="display:none;">
@@ -447,12 +358,10 @@ nav.tabbar{
 <script>
 (function(){
   "use strict";
-
-  /* ================= FIREBASE CONFIG ================= */
   const firebaseConfig = {
     apiKey: "AIzaSyC_6pie74vrvFIYJDT0QOaQeLaZO8fSWOo",
     authDomain: "crava-65b13.firebaseapp.com",
-    databaseURL: "https://crava-65b13-default-rtdb.firebaseio.com", // من ئەمەم بۆ زیادکردیت!
+    databaseURL: "https://crava-65b13-default-rtdb.firebaseio.com",
     projectId: "crava-65b13",
     storageBucket: "crava-65b13.firebasestorage.app",
     messagingSenderId: "697423980333",
@@ -462,7 +371,6 @@ nav.tabbar{
   firebase.initializeApp(firebaseConfig);
   const db = firebase.database();
 
-  /* ================= CONFIG ================= */
   var VALID_CODES = ["CRAVA-2026-A1","CRAVA-2026-B2","CRAVA-2026-C3","CRAVA-2026-D4","CRAVA-2026-E5",
                       "CRAVA-2026-F6","CRAVA-2026-G7","CRAVA-2026-H8","CRAVA-2026-I9","CRAVA-2026-J10"];
   var CODE_REWARD_POINTS = 100;
@@ -470,28 +378,26 @@ nav.tabbar{
   var SESSION_KEY = "crava_session_v1";
 
   var WHEEL_SEGMENTS = [
-    { label:"دووبارە هەوڵبدەوە", type:"none",   points:0,   weight:48, color:"var(--charcoal-3)" }, 
-    { label:"+٥٠ خاڵ",         type:"points", points:50,  weight:48, color:"var(--green-light)" },
-    { label:"فرایزی خۆڕایی",   type:"fries",  points:0,   weight:1,  color:"var(--charcoal-3)" }, 
-    { label:"+١٠٠ خاڵ",        type:"points", points:100, weight:2, color:"var(--green-light)" },
-    { label:"جوسی خۆڕایی",     type:"juice",  points:0,   weight:0.5,  color:"var(--charcoal-3)" }, 
-    { label:"+٢٥٠ خاڵ",        type:"points", points:250, weight:0.5,  color:"var(--green-light)" } 
+    { label:"دووبارە هەوڵبدەوە", type:"none",   points:0,   weight:48 }, 
+    { label:"+٥٠ خاڵ",         type:"points", points:50,  weight:48 },
+    { label:"فرایزی خۆڕایی",   type:"fries",  points:0,   weight:1  }, 
+    { label:"+١٠٠ خاڵ",        type:"points", points:100, weight:2  },
+    { label:"جوسی خۆڕایی",     type:"juice",  points:0,   weight:0.5 }, 
+    { label:"+٢٥٠ خاڵ",        type:"points", points:250, weight:0.5 } 
   ];
   var SEG_COUNT = WHEEL_SEGMENTS.length;
   var SEG_ANGLE = 360 / SEG_COUNT;
   var SEG_COLORS_CSS = ["#f5a623","#1f6b3a","#ffc531","#2e8b4f","#e0a066","#175c30"];
 
   function normalizeName(n){ return n.trim().replace(/^@+/,"").toLowerCase(); }
+  var currentUser = null;
 
-  /* ================= STATE ================= */
-  var currentUser = null; // { key, name, points, spins }
-
-  /* ================= DOM ================= */
   var el = {
     authSection: document.getElementById("section-auth"),
     homeSection: document.getElementById("section-home"),
     wheelSection: document.getElementById("section-wheel"),
     lbSection: document.getElementById("section-leaderboard"),
+    adminSection: document.getElementById("section-admin"),
     tabbar: document.getElementById("tabbar"),
     nameInput: document.getElementById("nameInput"),
     loginBtn: document.getElementById("loginBtn"),
@@ -509,6 +415,9 @@ nav.tabbar{
     spinsLeft: document.getElementById("spinsLeft"),
     wheelInfo: document.getElementById("wheelInfo"),
     leaderboardList: document.getElementById("leaderboardList"),
+    adminList: document.getElementById("adminList"),
+    openAdminBtn: document.getElementById("openAdminBtn"),
+    backToAppBtn: document.getElementById("backToAppBtn"),
     resultOverlay: document.getElementById("resultOverlay"),
     resultEmoji: document.getElementById("resultEmoji"),
     resultTitle: document.getElementById("resultTitle"),
@@ -516,7 +425,6 @@ nav.tabbar{
     resultCloseBtn: document.getElementById("resultCloseBtn")
   };
 
-  /* ================= BUILD WHEEL ================= */
   function buildWheel(){
     el.wheelEl.innerHTML = "";
     var colors = [];
@@ -530,27 +438,28 @@ nav.tabbar{
       labelDiv.className = "wheel-label";
       var midAngle = startAngle + (SEG_ANGLE / 2);
       labelDiv.style.transform = "translate(-50%, -50%) rotate(" + midAngle + "deg) translateY(-85px) rotate(90deg)";
-      var dark = (i % 2 === 1);
-      labelDiv.style.color = dark ? "#f3f7f4" : "#12160f";
+      labelDiv.style.color = (i % 2 === 1) ? "#f3f7f4" : "#12160f";
       labelDiv.textContent = seg.label;
       el.wheelEl.appendChild(labelDiv);
     }
     el.wheelEl.style.background = "conic-gradient(from 0deg, " + colors.join(", ") + ")";
   }
 
-  /* ================= NAVIGATION ================= */
   function goSection(name){
-    [el.authSection, el.homeSection, el.wheelSection, el.lbSection].forEach(function(s){ s.classList.remove("active"); });
+    [el.authSection, el.homeSection, el.wheelSection, el.lbSection, el.adminSection].forEach(function(s){ s.classList.remove("active"); });
     if(name === "auth"){ el.authSection.classList.add("active"); el.tabbar.style.display="none"; }
     if(name === "home"){ el.homeSection.classList.add("active"); el.tabbar.style.display="flex"; setActiveTab("home"); }
     if(name === "wheel"){ el.wheelSection.classList.add("active"); el.tabbar.style.display="flex"; setActiveTab("wheel"); }
     if(name === "leaderboard"){ el.lbSection.classList.add("active"); el.tabbar.style.display="flex"; setActiveTab("leaderboard"); }
+    if(name === "admin"){ el.adminSection.classList.add("active"); el.tabbar.style.display="none"; }
   }
+
   function setActiveTab(name){
     document.querySelectorAll(".tab-btn").forEach(function(b){
       b.classList.toggle("active", b.getAttribute("data-tab") === name);
     });
   }
+
   function showMsg(node, text, ok){
     node.textContent = text;
     node.classList.remove("ok","err");
@@ -570,7 +479,6 @@ nav.tabbar{
       : "بۆ خستنەکار، سەرەتا کۆدی وەصڵێکی دروست بنووسە.";
   }
 
-  /* ================= AUTH (FIREBASE) ================= */
   el.loginBtn.addEventListener("click", function(){
     var raw = el.nameInput.value || "";
     var name = raw.trim();
@@ -597,7 +505,11 @@ nav.tabbar{
         goSection("home");
         el.loginBtn.disabled = false;
         el.loginBtn.textContent = "چوونەژوورەوە";
-      }, 1000);
+      }, 800);
+    }).catch(function(){
+      showMsg(el.authMsg, "هەڵەیەک ڕوویدا لە پەیوەندیکردن.", false);
+      el.loginBtn.disabled = false;
+      el.loginBtn.textContent = "چوونەژوورەوە";
     });
   });
 
@@ -609,7 +521,6 @@ nav.tabbar{
     goSection("auth");
   });
 
-  /* ================= CODE REDEMPTION (FIREBASE) ================= */
   el.redeemBtn.addEventListener("click", function(){
     if(!currentUser) return;
     var code = (el.codeInput.value || "").trim().toUpperCase();
@@ -635,7 +546,6 @@ nav.tabbar{
     });
   });
 
-  /* ================= WHEEL SPIN ================= */
   var isSpinning = false;
   var currentRotation = 0;
 
@@ -696,12 +606,26 @@ nav.tabbar{
     el.resultEmoji.textContent = emoji;
     el.resultTitle.textContent = title;
     el.resultSub.textContent = sub;
-    el.resultOverlay.classList.add("show")
+    el.resultOverlay.classList.add("show");
   }
 
   el.resultCloseBtn.addEventListener("click", function(){ el.resultOverlay.classList.remove("show"); });
 
-  /* ================= LEADERBOARD (REALTIME FIREBASE) ================= */
+  // Admin Trigger Button Click with a simple prompt password for security
+  el.openAdminBtn.addEventListener("click", function(){
+    var pass = prompt("تکایە وشەی تێپەڕی بەڕێوەبەر (Admin Password) بنووسە:");
+    if(pass === "crava2026") { // دەتوانیت وشەی تێپەڕ لێرە بگۆڕیت
+      goSection("admin");
+    } else if(pass !== null) {
+      alert("وشەی تێپەڕ نادروستە!");
+    }
+  });
+
+  el.backToAppBtn.addEventListener("click", function(){
+    goSection("leaderboard");
+  });
+
+  // Realtime Database listeners for Leaderboard and Admin panel
   db.ref('users').on('value', function(snapshot) {
     var users = snapshot.val() || {};
     var list = Object.keys(users).map(function(k){
@@ -709,25 +633,45 @@ nav.tabbar{
     });
     list.sort(function(a,b){ return b.points - a.points; });
     
+    // Render Leaderboard
     el.leaderboardList.innerHTML = "";
     if(list.length === 0){
       el.leaderboardList.innerHTML = '<div class="lb-empty">هێشتا هیچ بەکارهێنەرێک تۆمار نەکراوە. یەکەم کەس بە!</div>';
-      return;
+    } else {
+      var rankClass = ["gold","silver","bronze"];
+      var rankBadge = ["🥇","🥈","🥉"];
+      list.forEach(function(u, idx){
+        var row = document.createElement("div");
+        row.className = "lb-row" + (idx < 3 ? " " + rankClass[idx] : "") + (currentUser && u.key === currentUser.key ? " me" : "");
+        var rankContent = idx < 3 ? rankBadge[idx] : (idx+1);
+        row.innerHTML =
+          '<div class="lb-rank">' + rankContent + '</div>' +
+          '<div class="lb-name">' + escapeHtml(u.name) + '</div>' +
+          '<div class="lb-pts">' + u.points + ' خاڵ</div>';
+        el.leaderboardList.appendChild(row);
+      });
     }
 
-    var rankClass = ["gold","silver","bronze"];
-    var rankBadge = ["🥇","🥈","🥉"];
-
-    list.forEach(function(u, idx){
-      var row = document.createElement("div");
-      row.className = "lb-row" + (idx < 3 ? " " + rankClass[idx] : "") + (currentUser && u.key === currentUser.key ? " me" : "");
-      var rankContent = idx < 3 ? rankBadge[idx] : (idx+1);
-      row.innerHTML =
-        '<div class="lb-rank">' + rankContent + '</div>' +
-        '<div class="lb-name">' + escapeHtml(u.name) + '</div>' +
-        '<div class="lb-pts">' + u.points + '</div>';
-      el.leaderboardList.appendChild(row);
-    });
+    // Render Admin Panel List
+    el.adminList.innerHTML = "";
+    if(list.length === 0){
+      el.adminList.innerHTML = '<div class="lb-empty">هیچ بەکارهێنەرێک نییە.</div>';
+    } else {
+      list.forEach(function(u){
+        var adminRow = document.createElement("div");
+        adminRow.className = "lb-row";
+        adminRow.innerHTML =
+          '<div class="lb-name"><b>' + escapeHtml(u.name) + '</b> <span style="font-size:11px; color:var(--text-dim);">(' + u.points + ' خاڵ)</span></div>' +
+          '<button class="btn btn-danger" data-key="' + u.key + '">سڕینەوە</button>';
+        
+        adminRow.querySelector("button").addEventListener("click", function(){
+          if(confirm("دڵنیای لە سڕینەوەی '" + u.name + "'؟")) {
+            db.ref('users/' + u.key).remove();
+          }
+        });
+        el.adminList.appendChild(adminRow);
+      });
+    }
   });
 
   function escapeHtml(s){
@@ -736,12 +680,10 @@ nav.tabbar{
     });
   }
 
-  /* ================= TABS ================= */
   document.querySelectorAll(".tab-btn").forEach(function(btn){
     btn.addEventListener("click", function(){ goSection(btn.getAttribute("data-tab")); });
   });
 
-  /* ================= INIT ================= */
   function init(){
     buildWheel();
     var savedKey = localStorage.getItem(SESSION_KEY);
@@ -755,7 +697,7 @@ nav.tabbar{
         } else {
           goSection("auth");
         }
-      });
+      }).catch(function(){ goSection("auth"); });
     } else {
       goSection("auth");
     }
