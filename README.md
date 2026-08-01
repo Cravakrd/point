@@ -228,7 +228,6 @@ nav.tabbar{
 .result-title{ font-size:19px; font-weight:800; margin:0 0 6px; color:var(--yellow-2); }
 .result-sub{ font-size:13px; color:var(--text-dim); margin:0 0 18px; }
 
-/* Admin link button hidden at bottom */
 .admin-trigger {
   text-align: center; margin-top: 30px; font-size: 11px; color: var(--text-dim); cursor: pointer; opacity: 0.5;
 }
@@ -253,12 +252,13 @@ nav.tabbar{
   <section class="section" id="section-auth">
     <div class="hero">
       <h1>بەخێربێیت بۆ CRAVA</h1>
-      <p>ناوت یان ئایدی ئینستاگرامت بنووسە بۆ چوونەژوورەوە، خاڵ کۆبکەرەوە و خەڵاتی گەرمە بەدەستبهێنە.</p>
+      <p>ناوت و پاسوۆردەکەت بنووسە بۆ چوونەژوورەوە یان دروستکردنی هەژماری نوێ.</p>
     </div>
     <div class="card">
       <h3 class="card-title"><span class="dot"></span> چوونەژوورەوە / تۆمارکردن</h3>
-      <p class="card-sub">ناوی تۆ ناتوانرێت دووبارە بیت — ئەگەر پێشتر تۆمارکراوی، خاڵەکانت پارێزراون.</p>
-      <input id="nameInput" class="field" type="text" placeholder="ناو یان @یوزەری ئینستاگرام" maxlength="30">
+      <p class="card-sub">ئەگەر ناوت هەبێت پاسوۆردەکەی دەنوسیت، ئەگەر نوێش بێت پاسوۆردێکی نوێ دادەنێیت.</p>
+      <input id="nameInput" class="field" type="text" placeholder="ناو یان @یوزەری ئینستاگرام" maxlength="30" style="margin-bottom:10px;">
+      <input id="passInput" class="field" type="password" placeholder="پاسوۆرد (مژە)" maxlength="30">
       <div style="height:12px"></div>
       <button class="btn btn-primary" id="loginBtn">چوونەژوورەوە</button>
       <div class="msg" id="authMsg"></div>
@@ -315,7 +315,6 @@ nav.tabbar{
       <p class="card-sub">لیستی خاڵترین بەکارهێنەرانی CRAVA — بە شێوەی ڕاستەوخۆ نوێ دەبێتەوە.</p>
       <div id="leaderboardList"></div>
     </div>
-    <!-- Hidden Admin Trigger Button -->
     <div class="admin-trigger" id="openAdminBtn">🔐 بەڕێوەبەر (Admin)</div>
   </section>
 
@@ -400,6 +399,7 @@ nav.tabbar{
     adminSection: document.getElementById("section-admin"),
     tabbar: document.getElementById("tabbar"),
     nameInput: document.getElementById("nameInput"),
+    passInput: document.getElementById("passInput"),
     loginBtn: document.getElementById("loginBtn"),
     authMsg: document.getElementById("authMsg"),
     headerPointsVal: document.getElementById("headerPointsVal"),
@@ -482,7 +482,10 @@ nav.tabbar{
   el.loginBtn.addEventListener("click", function(){
     var raw = el.nameInput.value || "";
     var name = raw.trim();
+    var pass = (el.passInput.value || "").trim();
+
     if(name.length < 2){ showMsg(el.authMsg, "تکایە ناوێکی گونجاو بنووسە (لانیکەم ٢ پیت).", false); return; }
+    if(pass.length < 3){ showMsg(el.authMsg, "تکایە پاسوۆردێک بنووسە (لانیکەم ٣ پیت).", false); return; }
     
     el.loginBtn.disabled = true;
     el.loginBtn.textContent = "چاوەڕێبە...";
@@ -490,11 +493,19 @@ nav.tabbar{
 
     db.ref('users/' + key).once('value').then(function(snapshot) {
       if(snapshot.exists()) {
-        currentUser = snapshot.val();
+        var userData = snapshot.val();
+        // Check password
+        if(userData.pass && userData.pass !== pass) {
+          showMsg(el.authMsg, "پاسوۆردەکە هەڵەیە! تکایە دڵنیابەوە.", false);
+          el.loginBtn.disabled = false;
+          el.loginBtn.textContent = "چوونەژوورەوە";
+          return;
+        }
+        currentUser = userData;
         currentUser.key = key;
-        showMsg(el.authMsg, "بەخێربێیتەوە " + currentUser.name + "! هەژمارەکەت دۆزرایەوە.", true);
+        showMsg(el.authMsg, "بەخێربێیتەوە " + currentUser.name + "!", true);
       } else {
-        currentUser = { name: name, points: STARTING_POINTS, spins: 0 };
+        currentUser = { name: name, pass: pass, points: STARTING_POINTS, spins: 0 };
         db.ref('users/' + key).set(currentUser);
         currentUser.key = key;
         showMsg(el.authMsg, "هەژمارت دروستکرا! " + STARTING_POINTS + " خاڵی سەرەتایی وەرگیرا 🎉", true);
@@ -517,6 +528,7 @@ nav.tabbar{
     localStorage.removeItem(SESSION_KEY);
     currentUser = null;
     el.nameInput.value = "";
+    el.passInput.value = "";
     el.authMsg.classList.remove("show");
     goSection("auth");
   });
@@ -611,10 +623,9 @@ nav.tabbar{
 
   el.resultCloseBtn.addEventListener("click", function(){ el.resultOverlay.classList.remove("show"); });
 
-  // Admin Trigger Button Click with a simple prompt password for security
   el.openAdminBtn.addEventListener("click", function(){
     var pass = prompt("تکایە وشەی تێپەڕی بەڕێوەبەر (Admin Password) بنووسە:");
-    if(pass === "crava2026") { // دەتوانیت وشەی تێپەڕ لێرە بگۆڕیت
+    if(pass === "crava2026") {
       goSection("admin");
     } else if(pass !== null) {
       alert("وشەی تێپەڕ نادروستە!");
@@ -625,7 +636,6 @@ nav.tabbar{
     goSection("leaderboard");
   });
 
-  // Realtime Database listeners for Leaderboard and Admin panel
   db.ref('users').on('value', function(snapshot) {
     var users = snapshot.val() || {};
     var list = Object.keys(users).map(function(k){
@@ -633,7 +643,6 @@ nav.tabbar{
     });
     list.sort(function(a,b){ return b.points - a.points; });
     
-    // Render Leaderboard
     el.leaderboardList.innerHTML = "";
     if(list.length === 0){
       el.leaderboardList.innerHTML = '<div class="lb-empty">هێشتا هیچ بەکارهێنەرێک تۆمار نەکراوە. یەکەم کەس بە!</div>';
@@ -652,7 +661,6 @@ nav.tabbar{
       });
     }
 
-    // Render Admin Panel List
     el.adminList.innerHTML = "";
     if(list.length === 0){
       el.adminList.innerHTML = '<div class="lb-empty">هیچ بەکارهێنەرێک نییە.</div>';
