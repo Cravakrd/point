@@ -258,7 +258,7 @@ nav.tabbar{
       <h3 class="card-title"><span class="dot"></span> چوونەژوورەوە / تۆمارکردن</h3>
       <p class="card-sub">ئەگەر ناوت هەبێت پاسوۆردەکەی دەنوسیت، ئەگەر نوێش بێت پاسوۆردێکی نوێ دادەنێیت.</p>
       <input id="nameInput" class="field" type="text" placeholder="ناو یان @یوزەری ئینستاگرام" maxlength="30" style="margin-bottom:10px;">
-      <input id="passInput" class="field" type="password" placeholder="پاسوۆرد (مژە)" maxlength="30">
+      <input id="passInput" class="field" type="password" placeholder="پاسوۆرد" maxlength="30">
       <div style="height:12px"></div>
       <button class="btn btn-primary" id="loginBtn">چوونەژوورەوە</button>
       <div class="msg" id="authMsg"></div>
@@ -283,12 +283,12 @@ nav.tabbar{
     </div>
     <div class="card">
       <h3 class="card-title"><span class="dot"></span> بەکارهێنانی کۆد</h3>
-      <p class="card-sub">نموونە: CRAVA-2026-A1 — هەر کۆدێک تەنها یەک جار بەکاردێت.</p>
+      <p class="card-sub"> هەر کۆدێک تەنها یەک جار </p>
       <input id="codeInput" class="field" type="text" placeholder="CRAVA-2026-XX" style="text-transform:uppercase;">
       <div style="height:12px"></div>
       <button class="btn btn-green" id="redeemBtn">پشکنین و وەرگرتنی خاڵ</button>
       <div class="msg" id="codeMsg"></div>
-      <div class="codes-note">هەر کۆدێکی دروست ١٠٠ خاڵت پێدەدات و یەک جەخماوی چەرخی خۆشییەکانت بۆ دەکاتەوە.</div>
+      <div class="codes-note">هەر کۆدێکی دروست ١٠٠ خاڵت پێدەدات و یەک هەلی چەرخی خۆشییەکانت بۆ دەکاتەوە.</div>
     </div>
   </section>
 
@@ -312,7 +312,7 @@ nav.tabbar{
   <section class="section" id="section-leaderboard">
     <div class="card">
       <h3 class="card-title"><span class="dot"></span> پێشەنگەکان</h3>
-      <p class="card-sub">لیستی خاڵترین بەکارهێنەرانی CRAVA — بە شێوەی ڕاستەوخۆ نوێ دەبێتەوە.</p>
+      <p class="card-sub">لیستی بەرزترین خاڵی بەکارهێنەرانی CRAVA — بە شێوەی ڕاستەوخۆ نوێ دەبێتەوە.</p>
       <div id="leaderboardList"></div>
     </div>
     <div class="admin-trigger" id="openAdminBtn">🔐 بەڕێوەبەر (Admin)</div>
@@ -381,7 +381,7 @@ nav.tabbar{
     { label:"+٥٠ خاڵ",         type:"points", points:50,  weight:48 },
     { label:"فرایزی خۆڕایی",   type:"fries",  points:0,   weight:1  }, 
     { label:"+١٠٠ خاڵ",        type:"points", points:100, weight:2  },
-    { label:"جوسی خۆڕایی",     type:"juice",  points:0,   weight:0.5 }, 
+    { label:"شەربەتی خۆڕایی",     type:"juice",  points:0,   weight:0.5 }, 
     { label:"+٢٥٠ خاڵ",        type:"points", points:250, weight:0.5 } 
   ];
   var SEG_COUNT = WHEEL_SEGMENTS.length;
