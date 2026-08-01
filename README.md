@@ -283,12 +283,12 @@ nav.tabbar{
     </div>
     <div class="card">
       <h3 class="card-title"><span class="dot"></span> بەکارهێنانی کۆد</h3>
-      <p class="card-sub"> هەر کۆدێک تەنها یەک جار </p>
+      <p class="card-sub">نموونە: CRAVA-2026-A1 — هەر کۆدێک تەنها یەک جار بەکاردێت.</p>
       <input id="codeInput" class="field" type="text" placeholder="CRAVA-2026-XX" style="text-transform:uppercase;">
       <div style="height:12px"></div>
       <button class="btn btn-green" id="redeemBtn">پشکنین و وەرگرتنی خاڵ</button>
       <div class="msg" id="codeMsg"></div>
-      <div class="codes-note">هەر کۆدێکی دروست ١٠٠ خاڵت پێدەدات و یەک هەلی چەرخی خۆشییەکانت بۆ دەکاتەوە.</div>
+      <div class="codes-note">هەر کۆدێکی دروست ١٠٠ خاڵت پێدەدات و یەک جەخماوی چەرخی خۆشییەکانت بۆ دەکاتەوە.</div>
     </div>
   </section>
 
@@ -312,7 +312,7 @@ nav.tabbar{
   <section class="section" id="section-leaderboard">
     <div class="card">
       <h3 class="card-title"><span class="dot"></span> پێشەنگەکان</h3>
-      <p class="card-sub">لیستی بەرزترین خاڵی بەکارهێنەرانی CRAVA — بە شێوەی ڕاستەوخۆ نوێ دەبێتەوە.</p>
+      <p class="card-sub">لیستی خاڵترین بەکارهێنەرانی CRAVA — بە شێوەی ڕاستەوخۆ نوێ دەبێتەوە.</p>
       <div id="leaderboardList"></div>
     </div>
     <div class="admin-trigger" id="openAdminBtn">🔐 بەڕێوەبەر (Admin)</div>
@@ -321,12 +321,19 @@ nav.tabbar{
   <!-- ADMIN SECTION -->
   <section class="section" id="section-admin">
     <div class="card">
-      <h3 class="card-title"><span class="dot"></span> بەڕێوەبردنی سیستەم (ئەدمین)</h3>
+      <h3 class="card-title"><span class="dot"></span> بەڕێوەبردنی بەکارهێنەران</h3>
       <p class="card-sub">لێرەدا دەتوانیت هەر بەکارهێنەرێک کە بتهەوێت بیسڕیتەوە.</p>
       <div id="adminList"></div>
-      <div style="height:14px"></div>
-      <button class="btn btn-primary" id="backToAppBtn">گەڕانەوە بۆ سایتەکە</button>
     </div>
+
+    <div class="card">
+      <h3 class="card-title"><span class="dot"></span> مێژووی بردنەوەکانی چەرخ (Spin History)</h3>
+      <p class="card-sub">بینینی ئەوەی کێ چەرخەکەی سووڕاندووە و چی بۆ دەرچووە:</p>
+      <div id="adminSpinHistory"></div>
+    </div>
+
+    <div style="height:10px"></div>
+    <button class="btn btn-primary" id="backToAppBtn">گەڕانەوە بۆ سایتەکە</button>
   </section>
 </main>
 
@@ -381,7 +388,7 @@ nav.tabbar{
     { label:"+٥٠ خاڵ",         type:"points", points:50,  weight:48 },
     { label:"فرایزی خۆڕایی",   type:"fries",  points:0,   weight:1  }, 
     { label:"+١٠٠ خاڵ",        type:"points", points:100, weight:2  },
-    { label:"شەربەتی خۆڕایی",     type:"juice",  points:0,   weight:0.5 }, 
+    { label:"جوسی خۆڕایی",     type:"juice",  points:0,   weight:0.5 }, 
     { label:"+٢٥٠ خاڵ",        type:"points", points:250, weight:0.5 } 
   ];
   var SEG_COUNT = WHEEL_SEGMENTS.length;
@@ -416,6 +423,7 @@ nav.tabbar{
     wheelInfo: document.getElementById("wheelInfo"),
     leaderboardList: document.getElementById("leaderboardList"),
     adminList: document.getElementById("adminList"),
+    adminSpinHistory: document.getElementById("adminSpinHistory"),
     openAdminBtn: document.getElementById("openAdminBtn"),
     backToAppBtn: document.getElementById("backToAppBtn"),
     resultOverlay: document.getElementById("resultOverlay"),
@@ -494,7 +502,6 @@ nav.tabbar{
     db.ref('users/' + key).once('value').then(function(snapshot) {
       if(snapshot.exists()) {
         var userData = snapshot.val();
-        // Check password
         if(userData.pass && userData.pass !== pass) {
           showMsg(el.authMsg, "پاسوۆردەکە هەڵەیە! تکایە دڵنیابەوە.", false);
           el.loginBtn.disabled = false;
@@ -594,7 +601,17 @@ nav.tabbar{
       isSpinning = false;
       currentUser.spins -= 1;
       if(seg.type === "points") { currentUser.points += seg.points; }
+      
+      // Update user in firebase
       db.ref('users/' + currentUser.key).update({ points: currentUser.points, spins: currentUser.spins });
+
+      // Save spin result to history in firebase
+      db.ref('spin_history').push({
+        name: currentUser.name,
+        result: seg.label,
+        time: new Date().toLocaleString()
+      });
+
       refreshUserUI();
       showResult(seg);
     }, 4300);
@@ -636,6 +653,7 @@ nav.tabbar{
     goSection("leaderboard");
   });
 
+  // Listeners for Leaderboard and Admin Panel data
   db.ref('users').on('value', function(snapshot) {
     var users = snapshot.val() || {};
     var list = Object.keys(users).map(function(k){
@@ -680,6 +698,28 @@ nav.tabbar{
         el.adminList.appendChild(adminRow);
       });
     }
+  });
+
+  // Listen to Spin History
+  db.ref('spin_history').limitToLast(20).on('value', function(snapshot) {
+    var histories = snapshot.val() || {};
+    var keys = Object.keys(histories).reverse(); // تازەترینەکان لە سەرەوە بن
+    
+    el.adminSpinHistory.innerHTML = "";
+    if(keys.length === 0){
+      el.adminSpinHistory.innerHTML = '<div class="lb-empty">هێشتا هیچ کەسێک چەرخی نەسوڕاندووە.</div>';
+      return;
+    }
+
+    keys.forEach(function(k){
+      var h = histories[k];
+      var row = document.createElement("div");
+      row.className = "lb-row";
+      row.innerHTML =
+        '<div class="lb-name"><b>' + escapeHtml(h.name) + '</b><br><span style="font-size:11px; color:var(--text-dim);">' + (h.time || '') + '</span></div>' +
+        '<div class="lb-pts" style="color:var(--yellow-2); font-size:13px;">' + escapeHtml(h.result) + '</div>';
+      el.adminSpinHistory.appendChild(adminRow || row);
+    });
   });
 
   function escapeHtml(s){
