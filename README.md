@@ -332,7 +332,7 @@ nav.tabbar{
 
 <header class="topbar">
   <div class="brand">
-    <img src="crava.gpj" alt="CRAVA logo">
+    <img src="crlogo.jpg" alt="CRAVA logo">
     <div>
       <div class="brand-sub">سۆران · فرێش جوس و فرایز</div>
     </div>
