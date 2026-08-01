@@ -295,7 +295,7 @@ nav.tabbar{
     </div>
     <div class="card">
       <h3 class="card-title"><span class="dot"></span> بەکارهێنانی کۆد</h3>
-      <p class="card-sub">نموونە: CRAVA5PX41K7 — هەر کۆدێک تەنها یەک جار بەکاردێت.</p>
+      <p class="card-sub">تەنها ئەو کۆدانە کاردەکەن کە لە دووکان دراون بە کڕیار.</p>
       <input id="codeInput" class="field" type="text" placeholder="کۆدی وەصڵ" style="text-transform:uppercase;">
       <div style="height:12px"></div>
       <button class="btn btn-green" id="redeemBtn">پشکنین و وەرگرتنی خاڵ</button>
@@ -389,26 +389,28 @@ nav.tabbar{
   firebase.initializeApp(firebaseConfig);
   const db = firebase.database();
 
+  // تەنها ئەم ١٠٠ کۆدە ڕەسەنە کاردەکەن و هیچی تر
   var VALID_CODES = [
-    "CRAVA9Xk2P7", "8XkCRAVA3p7", "1mQ5b9CRAVA", "CRAVA7pX29k", "4vQ9CRAVA3Xp2",
-    "Z9k2CRAVA6b9", "CRAVA8pX57k1", "2mQ94XCRAVA", "CRAVA3v2P9k5", "6XkCRAVA7b9p",
-    "1pQ2CRAVA5X8", "CRAVA9b9X4k2", "7Xk2p9CRAVA", "CRAVA5vQ38k1", "3mQ9CRAVA4Xp6",
-    "CRAVA8k2P7b9", "2XkCRAVA9p5X", "4pQ16b9CRAVA", "CRAVA7vQ23k8", "9mQ5CRAVA1Xp4",
-    "CRAVA6k2P8b3", "5XkCRAVA2p7X", "1vQ94b6CRAVA", "CRAVA3pX89k2", "8mQ1CRAVA5Xp7",
-    "CRAVA4k2P6b9", "7XkCRAVA1p3X", "2vQ58b4CRAVA", "CRAVA9pX27k6", "3kQ1CRAVA6Xp8",
-    "CRAVA5m2P9b1", "1XkCRAVA4p2X", "6vQ73b5CRAVA", "CRAVA8pX92k4", "4mQ6CRAVA7Xp1",
-    "CRAVA2k9P5b8", "9XkCRAVA3p6X", "5vQ12b7CRAVA", "CRAVA7pX48k9", "1kQ5CRAVA6Xp3",
-    "CRAVA8m2P4b7", "3XkCRAVA9p1X", "6vQ25b8CRAVA", "CRAVA2pX67k3", "9mQ4CRAVA1Xp8",
-    "CRAVA4k9P2b5", "7XkCRAVA6p3X", "8vQ19b2CRAVA", "CRAVA5pX74k6", "3kQ2CRAVA8Xp1",
-    "CRAVA6m9P7b4", "1XkCRAVA2p9X", "4vQ53b6CRAVA", "CRAVA9pX81k7", "2kQ6CRAVA5Xp9",
-    "CRAVA7m2P3b8", "8XkCRAVA4p1X", "1vQ76b2CRAVA", "CRAVA3pX59k4", "6kQ1CRAVA2Xp7",
-    "CRAVA9m9P8b3", "4XkCRAVA7p6X", "5vQ21b9CRAVA", "CRAVA8pX32k5", "1kQ4CRAVA9Xp6",
-    "CRAVA3m2P5b7", "7XkCRAVA1p8X", "2vQ84b3CRAVA", "CRAVA6pX97k2", "5kQ3CRAVA1Xp4",
-    "CRAVA8m9P6b2", "9XkCRAVA2p5X", "3vQ78b1CRAVA", "CRAVA4pX19k6", "7kQ2CRAVA3Xp8",
-    "CRAVA1m2P4b9", "6XkCRAVA9p7X", "2vQ45b6CRAVA", "CRAVA8pX23k1", "9kQ5CRAVA7Xp4",
-    "CRAVA2m9P1b8", "5XkCRAVA6p2X", "4vQ18b7CRAVA", "CRAVA3pX95k2", "6kQ8CRAVA2Xp3",
-    "CRAVA7m2P9b6", "1XkCRAVA4p5X", "8vQ23b9CRAVA", "CRAVA5pX41k7"
+    "CRAVA9XK2P7","8XKCRAVA3P7","1MQ5B9CRAVA","CRAVA7PX29K","4VQ9CRAVA3XP2",
+    "Z9K2CRAVA6B9","CRAVA8PX57K1","2MQ94XCRAVA","CRAVA3V2P9K5","6XKCRAVA7B9P",
+    "1PQ2CRAVA5X8","CRAVA9B9X4K2","7XK2P9CRAVA","CRAVA5VQ38K1","3MQ9CRAVA4XP6",
+    "CRAVA8K2P7B9","2XKCRAVA9P5X","4PQ16B9CRAVA","CRAVA7VQ23K8","9MQ5CRAVA1XP4",
+    "CRAVA6K2P8B3","5XKCRAVA2P7X","1VQ94B6CRAVA","CRAVA3PX89K2","8MQ1CRAVA5XP7",
+    "CRAVA4K2P6B9","7XKCRAVA1P3X","2VQ58B4CRAVA","CRAVA9PX27K6","3KQ1CRAVA6XP8",
+    "CRAVA5M2P9B1","1XKCRAVA4P2X","6VQ73B5CRAVA","CRAVA8PX92K4","4MQ6CRAVA7XP1",
+    "CRAVA2K9P5B8","9XKCRAVA3P6X","5VQ12B7CRAVA","CRAVA7PX48K9","1KQ5CRAVA6XP3",
+    "CRAVA8M2P4B7","3XKCRAVA9P1X","6VQ25B8CRAVA","CRAVA2PX67K3","9MQ4CRAVA1XP8",
+    "CRAVA4K9P2B5","7XKCRAVA6P3X","8VQ19B2CRAVA","CRAVA5PX74K6","3KQ2CRAVA8XP1",
+    "CRAVA6M9P7B4","1XKCRAVA2P9X","4VQ53B6CRAVA","CRAVA9PX81K7","2KQ6CRAVA5XP9",
+    "CRAVA7M2P3B8","8XKCRAVA4P1X","1VQ76B2CRAVA","CRAVA3PX59K4","6KQ1CRAVA2XP7",
+    "CRAVA9M9P8B3","4XKCRAVA7P6X","5VQ21B9CRAVA","CRAVA8PX32K5","1KQ4CRAVA9XP6",
+    "CRAVA3M2P5B7","7XKCRAVA1P8X","2VQ84B3CRAVA","CRAVA6PX97K2","5KQ3CRAVA1XP4",
+    "CRAVA8M9P6B2","9XKCRAVA2P5X","3VQ78B1CRAVA","CRAVA4PX19K6","7KQ2CRAVA3XP8",
+    "CRAVA1M2P4B9","6XKCRAVA9P7X","2VQ45B6CRAVA","CRAVA8PX23K1","9KQ5CRAVA7XP4",
+    "CRAVA2M9P1B8","5XKCRAVA6P2X","4VQ18B7CRAVA","CRAVA3PX95K2","6KQ8CRAVA2XP3",
+    "CRAVA7M2P9B6","1XKCRAVA4P5X","8VQ23B9CRAVA","CRAVA5PX41K7"
   ];
+
   var CODE_REWARD_POINTS = 100;
   var STARTING_POINTS = 10;
   var SESSION_KEY = "crava_session_v1";
@@ -581,7 +583,12 @@ nav.tabbar{
     if(!currentUser) return;
     var code = (el.codeInput.value || "").trim().toUpperCase();
     if(!code){ showMsg(el.codeMsg, "تکایە کۆدەکە بنووسە.", false); return; }
-    if(VALID_CODES.indexOf(code) === -1){ showMsg(el.codeMsg, "ئەم کۆدە نادروستە. تکایە دووبارە پشکنینی بکەرەوە.", false); return; }
+    
+    // تەنها و تەنها ئەگەر لە ناو لیستی VALID_CODES دا هەبێت قبوڵ دەبێت
+    if(VALID_CODES.indexOf(code) === -1){ 
+      showMsg(el.codeMsg, "ئەم کۆدە نادروستە. تکایە دووبارە پشکنینی بکەرەوە.", false); 
+      return; 
+    }
     
     el.redeemBtn.disabled = true;
 
@@ -793,7 +800,6 @@ nav.tabbar{
     var savedKey = localStorage.getItem(SESSION_KEY);
     if(savedKey){
       db.ref('users/' + savedKey).once('value').then(function(snapshot) {
-        `userData`
         if(snapshot.exists()){
           currentUser = snapshot.val();
           currentUser.key = savedKey;
