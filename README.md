@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 <html lang="ckb" dir="rtl">
 <head>
 <meta charset="UTF-8">
@@ -332,7 +332,7 @@ nav.tabbar{
 
 <header class="topbar">
   <div class="brand">
-    <img src="__LOGO_SRC__" alt="CRAVA logo">
+    <img src="crava.gpj" alt="CRAVA logo">
     <div>
       <div class="brand-sub">سۆران · فرێش جوس و فرایز</div>
     </div>
