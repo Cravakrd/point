@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 <html lang="ckb" dir="rtl">
 <head>
 <meta charset="UTF-8">
@@ -379,7 +379,7 @@ nav.tabbar{
         هێشتا سەرەتای! بگاتە ١٠ خاڵ تا دیارییەکەی یەکەمت (١ شەربەت یان فرایزی فرێش) وەربگریت.
       </div>
     </div>
-    <div class="admin-trigger" id="openAdminBtn">🔐 بەڕێوەبەر (Admin)</div>
+    <div class="admin-trigger" id="openAdminBtn"> (crava)</div>
   </section>
 
   <!-- ADMIN SECTION -->
