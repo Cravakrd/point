@@ -1,4 +1,4 @@
-
+<!DOCTYPE html>
 <html lang="ckb" dir="rtl">
 <head>
 <meta charset="UTF-8">
@@ -325,7 +325,7 @@ nav.tabbar{
       <div style="height:12px"></div>
       <button class="btn btn-green" id="redeemBtn">پشکنین و وەرگرتنی خاڵ</button>
       <div class="msg" id="codeMsg"></div>
-      <div class="codes-note">هەر کۆدێکی دروست ١٠٠ خاڵت پێدەدات و یەک جەخماوی چەرخی خۆشییەکانت بۆ دەکاتەوە.</div>
+      <div class="codes-note">هەر کۆدێکی دروست ١ خاڵت پێدەدات لەگەڵ یەک جەخماوی چەرخی خۆشییەکان.</div>
     </div>
   </section>
 
@@ -362,24 +362,24 @@ nav.tabbar{
         <div class="milestones">
           <div class="milestone" id="m1000">
             <div class="milestone-dot"></div>
-            <div class="milestone-label">١٠٠٠ خاڵ<img src="https://img.icons8.com/3d-fluency/94/gift.png" crossorigin="anonymous" class="gift-icon-img" alt="3D Gift"></div>
+            <div class="milestone-label">١٠ خاڵ<img src="https://img.icons8.com/3d-fluency/94/gift.png" crossorigin="anonymous" class="gift-icon-img" alt="3D Gift"></div>
           </div>
           <div class="milestone" id="m2000">
             <div class="milestone-dot"></div>
-            <div class="milestone-label">٢٠٠٠ خاڵ<img src="https://img.icons8.com/3d-fluency/94/gift.png" crossorigin="anonymous" class="gift-icon-img" alt="3D Gift"></div>
+            <div class="milestone-label">٢٠ خاڵ<img src="https://img.icons8.com/3d-fluency/94/gift.png" crossorigin="anonymous" class="gift-icon-img" alt="3D Gift"></div>
           </div>
           <div class="milestone" id="m3000">
             <div class="milestone-dot"></div>
-            <div class="milestone-label">٣٠٠٠ خاڵ<img src="https://img.icons8.com/3d-fluency/94/gift.png" crossorigin="anonymous" class="gift-icon-img" alt="3D Gift"></div>
+            <div class="milestone-label">٣٠ خاڵ<img src="https://img.icons8.com/3d-fluency/94/gift.png" crossorigin="anonymous" class="gift-icon-img" alt="3D Gift"></div>
           </div>
         </div>
       </div>
 
       <div class="gift-box-desc" id="giftDescText">
-        هێشتا سەرەتای! بگاتە ١٠٠٠ خاڵ تا دیارییەکەی یەکەمت (١ شەربەت یان فرایزی فرێش) وەربگریت.
+        هێشتا سەرەتای! بگاتە ١٠ خاڵ تا دیارییەکەی یەکەمت (١ شەربەت یان فرایزی فرێش) وەربگریت.
       </div>
     </div>
-    <div class="admin-trigger" id="openAdminBtn">crava </div>
+    <div class="admin-trigger" id="openAdminBtn">🔐 بەڕێوەبەر (Admin)</div>
   </section>
 
   <!-- ADMIN SECTION -->
@@ -475,22 +475,25 @@ nav.tabbar{
     "CRAVA7M2P9B6","1XKCRAVA4P5X","8VQ23B9CRAVA","CRAVA5PX41K7"
   ];
 
-  var CODE_REWARD_POINTS = 100;
-  var STARTING_POINTS = 10;
+  // لێرەدا خاڵەکانمان گۆڕی بۆ سیستەمی نوێ
+  var CODE_REWARD_POINTS = 1;
+  var STARTING_POINTS = 0;
   var SESSION_KEY = "crava_session_v1";
 
-  var TARGET_1 = 1000;
-  var TARGET_2 = 2000;
-  var TARGET_3 = 3000;
+  var TARGET_1 = 10;
+  var TARGET_2 = 20;
+  var TARGET_3 = 30;
 
+  // بەشە نوێیەکانی چەرخەکە
   var WHEEL_SEGMENTS = [
-    { label:"دووبارە هەوڵبدەوە", type:"none",   points:0,   weight:48 }, 
-    { label:"+٥٠ خاڵ",         type:"points", points:50,  weight:48 },
-    { label:"فرایزی خۆڕایی",   type:"fries",  points:0,   weight:1  }, 
-    { label:"+١٠٠ خاڵ",        type:"points", points:100, weight:2  },
-    { label:"جوسی خۆڕایی",     type:"juice",  points:0,   weight:0.5 }, 
-    { label:"+٢٥٠ خاڵ",        type:"points", points:250, weight:0.5 } 
+    { label:"دووبارە هەوڵبدەوە", type:"none",     points:0, weight:45 }, 
+    { label:"+١ خاڵ",            type:"points",   points:1, weight:35 },
+    { label:"داشکاندنی ١٠٪",     type:"discount", points:0, weight:10 },
+    { label:"+٢ خاڵ",            type:"points",   points:2, weight:7  },
+    { label:"فرایزی خۆڕایی",     type:"fries",    points:0, weight:2  },
+    { label:"جوسی خۆڕایی",       type:"juice",    points:0, weight:1  }
   ];
+  
   var SEG_COUNT = WHEEL_SEGMENTS.length;
   var SEG_ANGLE = 360 / SEG_COUNT;
   var SEG_COLORS_CSS = ["#f5a623","#1f6b3a","#ffc531","#2e8b4f","#e0a066","#175c30"];
@@ -711,7 +714,7 @@ nav.tabbar{
         currentUser = { name: name, pass: pass, points: STARTING_POINTS, spins: 0, notifiedLevel: 0 };
         db.ref('users/' + key).set(currentUser);
         currentUser.key = key;
-        showMsg(el.authMsg, "هەژمارت دروستکرا! " + STARTING_POINTS + " خاڵی سەرەتایی وەرگیرا 🎉", true);
+        showMsg(el.authMsg, "هەژمارت دروستکرا! هەژمارەکەت ئامادەیە 🎉", true);
       }
       localStorage.setItem(SESSION_KEY, key);
       setTimeout(function(){
@@ -836,6 +839,9 @@ nav.tabbar{
     if(seg.type === "points"){
       emoji = "💰"; title = "براوەی " + seg.points + " خاڵ بوویت!";
       sub = "خاڵەکانت زیادکران بۆ ژمارەی گشتیت.";
+    } else if(seg.type === "discount"){
+      emoji = "🏷️"; title = "داشکاندنی ١٠٪ ت بردەوە!";
+      sub = "لە کڕینی داهاتووتدا ئەم پەیامە پیشانی کارمەندەکە بدە.";
     } else if(seg.type === "juice"){
       emoji = "🥤"; title = "جوسی خۆڕایی بردتەوە!";
       sub = "ئەم پەیامە بۆ کارمەندی خشتەکە پیشان بدە.";
