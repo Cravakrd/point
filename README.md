@@ -9,6 +9,9 @@
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 
+<!-- Confetti Library -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
 <style>
 :root{
   --green:#1f6b3a;
@@ -182,30 +185,47 @@ main{max-width:520px; margin:0 auto; padding:18px 16px 8px;}
 .wheel-hub span{font-size:16px;}
 .spin-hint{ text-align:center; color:var(--text-dim); font-size:12.5px; margin-bottom:10px; }
 
-.lb-row{
-  display:flex; align-items:center; gap:10px; padding:11px 10px; border-radius:14px;
-  background:rgba(255,255,255,0.02); margin-bottom:8px; border:1px solid rgba(255,255,255,0.04);
+/* Progress Bar Styles */
+.progress-container { margin: 20px 0 10px; }
+.progress-info {
+  display: flex; justify-content: space-between; font-size: 13px; font-weight: 700; margin-bottom: 8px; color: var(--yellow-2);
 }
-.lb-rank{
-  width:30px; height:30px; border-radius:10px; flex:none; display:flex; align-items:center; justify-content:center;
-  font-weight:800; font-size:13px; color:var(--text-dim); background:rgba(255,255,255,0.04);
+.progress-track {
+  position: relative; background: #0f1512; height: 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.08); overflow: hidden; margin-bottom: 45px;
 }
-.lb-row.gold .lb-rank{ background:linear-gradient(145deg,#ffe08a,#d69b1f); color:#3a2a00;}
-.lb-row.silver .lb-rank{ background:linear-gradient(145deg,#eef3f1,#a9b4b0); color:#22302a;}
-.lb-row.bronze .lb-rank{ background:linear-gradient(145deg,#e0a066,#8a5427); color:#301c07;}
-.lb-name{flex:1; font-size:13.5px; font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
-.lb-pts{font-size:13px; font-weight:800; color:var(--yellow-2); margin-left:6px;}
-.lb-empty{ text-align:center; color:var(--text-dim); font-size:13px; padding:20px 0;}
+.progress-fill {
+  background: linear-gradient(90deg, var(--green-light), var(--yellow)); height: 100%; width: 0%; border-radius: 10px; transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.milestones {
+  position: relative; display: flex; justify-content: space-between; margin-top: -30px; padding: 0 5px;
+}
+.milestone { text-align: center; position: relative; flex: 1; perspective: 1000px; }
+.milestone-dot {
+  width: 14px; height: 14px; background: #26332c; border: 2px solid var(--text-dim); border-radius: 50%; margin: 0 auto 8px; transition: all 0.3s;
+}
+.milestone.achieved .milestone-dot {
+  background: var(--yellow); border-color: var(--yellow-2); box-shadow: 0 0 15px var(--yellow-glow);
+}
+.milestone-label {
+  font-size: 11.5px; font-weight: 800; color: var(--text-dim); transition: color 0.3s;
+}
+/* 3D Gift Icon Styling */
+.gift-icon-img {
+  width: 38px; 
+  height: 38px; 
+  display: block; 
+  margin: 6px auto 0; 
+  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+}
+.milestone.achieved .milestone-label { color: var(--yellow-2); }
+.milestone.achieved .gift-icon-img {
+  transform: scale(1.3) translateY(-4px);
+  filter: drop-shadow(0 8px 12px rgba(255,197,49,0.7));
+}
 
-.vip-badge {
-  background: linear-gradient(135deg, #ffc531, #f5a623);
-  color: #12160f;
-  font-size: 10px;
-  font-weight: 800;
-  padding: 2px 6px;
-  border-radius: 6px;
-  margin-right: 6px;
-  box-shadow: 0 0 8px rgba(255,197,49,0.5);
+.gift-box-desc {
+  background: rgba(255,197,49,0.08); border: 1px dashed rgba(255,197,49,0.3); padding: 12px; border-radius: 14px; font-size: 12.5px; color: var(--text); text-align: center; line-height: 1.6; margin-top: 15px;
 }
 
 nav.tabbar{
@@ -227,18 +247,23 @@ nav.tabbar{
 @keyframes fadeUp{ from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);} }
 .codes-note{ font-size:11px; color:var(--text-dim); margin-top:10px; line-height:1.7; }
 
+/* Overlay Pop-ups */
 .result-overlay{
   position:fixed; inset:0; z-index:100; display:none; align-items:center; justify-content:center;
-  background:rgba(6,9,7,0.75); backdrop-filter:blur(4px); padding:20px;
+  background:rgba(6,9,7,0.85); backdrop-filter:blur(6px); padding:20px;
 }
-.result-overlay.show{ display:flex; }
+.result-overlay.show{ display:flex; animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
+@keyframes popIn { 0% { opacity: 0; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1); } }
 .result-card{
   width:100%; max-width:340px; text-align:center; background:linear-gradient(160deg, var(--charcoal-3), var(--card));
   border:1px solid rgba(255,197,49,0.35); border-radius:22px; padding:30px 24px 26px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.6);
 }
-.result-emoji{ font-size:46px; margin-bottom:6px; }
-.result-title{ font-size:19px; font-weight:800; margin:0 0 6px; color:var(--yellow-2); }
-.result-sub{ font-size:13px; color:var(--text-dim); margin:0 0 18px; }
+.result-emoji{ font-size:55px; margin-bottom:10px; display: inline-block; }
+.milestone-celebrate { animation: bounceGlow 1.5s infinite; }
+@keyframes bounceGlow { 0%, 100% { transform: translateY(0); filter: drop-shadow(0 0 10px rgba(255,197,49,0.5)); } 50% { transform: translateY(-10px); filter: drop-shadow(0 0 25px rgba(255,197,49,0.9)); } }
+.result-title{ font-size:22px; font-weight:800; margin:0 0 8px; color:var(--yellow-2); }
+.result-sub{ font-size:14px; color:var(--text-dim); margin:0 0 22px; line-height: 1.6; }
 
 .admin-trigger {
   text-align: center; margin-top: 30px; font-size: 11px; color: var(--text-dim); cursor: pointer; opacity: 0.5;
@@ -320,14 +345,41 @@ nav.tabbar{
     </div>
   </section>
 
-  <!-- LEADERBOARD -->
-  <section class="section" id="section-leaderboard">
+  <!-- REWARDS / PROGRESS BAR SECTION -->
+  <section class="section" id="section-rewards">
     <div class="card">
-      <h3 class="card-title"><span class="dot"></span> پێشەنگەکان</h3>
-      <p class="card-sub">لیستی خاڵترین بەکارهێنەرانی CRAVA — بە شێوەی ڕاستەوخۆ نوێ دەبێتەوە.</p>
-      <div id="leaderboardList"></div>
+      <h3 class="card-title"><span class="dot"></span> ئاست و دیارییەکانی تۆ</h3>
+      <p class="card-sub">بە زیادبوونی خاڵەکانت، هێڵەکە پڕ دەبێتەوە و دیارییەکان بەدەستبهێنە!</p>
+      
+      <div class="progress-container">
+        <div class="progress-info">
+          <span>خاڵەکانی من: <b id="progPts">0</b> خاڵ</span>
+          <span id="progPercent">0%</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="progFill"></div>
+        </div>
+        <div class="milestones">
+          <div class="milestone" id="m1000">
+            <div class="milestone-dot"></div>
+            <div class="milestone-label">١٠٠٠ خاڵ<img src="https://img.icons8.com/3d-fluency/94/gift.png" crossorigin="anonymous" class="gift-icon-img" alt="3D Gift"></div>
+          </div>
+          <div class="milestone" id="m2000">
+            <div class="milestone-dot"></div>
+            <div class="milestone-label">٢٠٠٠ خاڵ<img src="https://img.icons8.com/3d-fluency/94/gift.png" crossorigin="anonymous" class="gift-icon-img" alt="3D Gift"></div>
+          </div>
+          <div class="milestone" id="m3000">
+            <div class="milestone-dot"></div>
+            <div class="milestone-label">٣٠٠٠ خاڵ<img src="https://img.icons8.com/3d-fluency/94/gift.png" crossorigin="anonymous" class="gift-icon-img" alt="3D Gift"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="gift-box-desc" id="giftDescText">
+        هێشتا سەرەتای! بگاتە ١٠٠٠ خاڵ تا دیارییەکەی یەکەمت (١ شەربەت یان فرایزی فرێش) وەربگریت.
+      </div>
     </div>
-    <div class="admin-trigger" id="openAdminBtn">🔐 بەڕێوەبەر (Admin)</div>
+    <div class="admin-trigger" id="openAdminBtn">crava </div>
   </section>
 
   <!-- ADMIN SECTION -->
@@ -358,18 +410,31 @@ nav.tabbar{
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 3v9l6 3"/></svg>
     چەرخ
   </button>
-  <button class="tab-btn" data-tab="leaderboard">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 21V10M16 21V4M4 21v-6"/></svg>
-    پێشەنگ
+  <button class="tab-btn" data-tab="rewards">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12v10H4V12"/><path d="M2 7h20v5H2z"/><path d="M12 22V7"/></svg>
+    دیارییەکان
   </button>
 </nav>
 
+<!-- Standard Result Overlay -->
 <div class="result-overlay" id="resultOverlay">
   <div class="result-card">
     <div class="result-emoji" id="resultEmoji">🎉</div>
     <h3 class="result-title" id="resultTitle">پیرۆزە!</h3>
     <p class="result-sub" id="resultSub">تۆ براوەی خاڵ بوویت</p>
     <button class="btn btn-primary" id="resultCloseBtn">باشە</button>
+  </div>
+</div>
+
+<!-- Milestone Celebration Pop-up -->
+<div class="result-overlay" id="milestoneModal">
+  <div class="result-card" style="border-color: #ffc531; background: linear-gradient(160deg, #1c2420, #0c1310);">
+    <!-- وێنەی سێ دووری لە شاشەی ئاهەنگگێڕانەکە -->
+    <img src="https://img.icons8.com/3d-fluency/94/gift.png" crossorigin="anonymous" class="result-emoji milestone-celebrate" id="milestoneEmoji" style="width: 85px; height: 85px; display: block; margin: 0 auto 10px;" alt="3D Gift">
+    
+    <h3 class="result-title" id="milestoneTitle" style="font-size: 26px;">پیرۆزە!</h3>
+    <p class="result-sub" id="milestoneSub" style="font-size: 15px; font-weight: 700; color: #fff;">ئاستێکی نوێت بڕی و دیارییەکت بردەوە!</p>
+    <button class="btn btn-primary" id="milestoneCloseBtn" style="font-size: 16px;">بەڕێوەیە بۆ وەرگرتن!</button>
   </div>
 </div>
 
@@ -389,7 +454,6 @@ nav.tabbar{
   firebase.initializeApp(firebaseConfig);
   const db = firebase.database();
 
-  // تەنها ئەم ١٠٠ کۆدە ڕەسەنە کاردەکەن و هیچی تر
   var VALID_CODES = [
     "CRAVA9XK2P7","8XKCRAVA3P7","1MQ5B9CRAVA","CRAVA7PX29K","4VQ9CRAVA3XP2",
     "Z9K2CRAVA6B9","CRAVA8PX57K1","2MQ94XCRAVA","CRAVA3V2P9K5","6XKCRAVA7B9P",
@@ -415,6 +479,10 @@ nav.tabbar{
   var STARTING_POINTS = 10;
   var SESSION_KEY = "crava_session_v1";
 
+  var TARGET_1 = 1000;
+  var TARGET_2 = 2000;
+  var TARGET_3 = 3000;
+
   var WHEEL_SEGMENTS = [
     { label:"دووبارە هەوڵبدەوە", type:"none",   points:0,   weight:48 }, 
     { label:"+٥٠ خاڵ",         type:"points", points:50,  weight:48 },
@@ -434,7 +502,7 @@ nav.tabbar{
     authSection: document.getElementById("section-auth"),
     homeSection: document.getElementById("section-home"),
     wheelSection: document.getElementById("section-wheel"),
-    lbSection: document.getElementById("section-leaderboard"),
+    rewardsSection: document.getElementById("section-rewards"),
     adminSection: document.getElementById("section-admin"),
     tabbar: document.getElementById("tabbar"),
     nameInput: document.getElementById("nameInput"),
@@ -453,7 +521,13 @@ nav.tabbar{
     spinBtn: document.getElementById("spinBtn"),
     spinsLeft: document.getElementById("spinsLeft"),
     wheelInfo: document.getElementById("wheelInfo"),
-    leaderboardList: document.getElementById("leaderboardList"),
+    progPts: document.getElementById("progPts"),
+    progPercent: document.getElementById("progPercent"),
+    progFill: document.getElementById("progFill"),
+    m1000: document.getElementById("m1000"),
+    m2000: document.getElementById("m2000"),
+    m3000: document.getElementById("m3000"),
+    giftDescText: document.getElementById("giftDescText"),
     adminList: document.getElementById("adminList"),
     adminSpinHistory: document.getElementById("adminSpinHistory"),
     openAdminBtn: document.getElementById("openAdminBtn"),
@@ -462,7 +536,11 @@ nav.tabbar{
     resultEmoji: document.getElementById("resultEmoji"),
     resultTitle: document.getElementById("resultTitle"),
     resultSub: document.getElementById("resultSub"),
-    resultCloseBtn: document.getElementById("resultCloseBtn")
+    resultCloseBtn: document.getElementById("resultCloseBtn"),
+    milestoneModal: document.getElementById("milestoneModal"),
+    milestoneTitle: document.getElementById("milestoneTitle"),
+    milestoneSub: document.getElementById("milestoneSub"),
+    milestoneCloseBtn: document.getElementById("milestoneCloseBtn")
   };
 
   function buildWheel(){
@@ -486,11 +564,11 @@ nav.tabbar{
   }
 
   function goSection(name){
-    [el.authSection, el.homeSection, el.wheelSection, el.lbSection, el.adminSection].forEach(function(s){ s.classList.remove("active"); });
+    [el.authSection, el.homeSection, el.wheelSection, el.rewardsSection, el.adminSection].forEach(function(s){ s.classList.remove("active"); });
     if(name === "auth"){ el.authSection.classList.add("active"); el.tabbar.style.display="none"; }
     if(name === "home"){ el.homeSection.classList.add("active"); el.tabbar.style.display="flex"; setActiveTab("home"); }
     if(name === "wheel"){ el.wheelSection.classList.add("active"); el.tabbar.style.display="flex"; setActiveTab("wheel"); }
-    if(name === "leaderboard"){ el.lbSection.classList.add("active"); el.tabbar.style.display="flex"; setActiveTab("leaderboard"); }
+    if(name === "rewards"){ el.rewardsSection.classList.add("active"); el.tabbar.style.display="flex"; setActiveTab("rewards"); updateProgressUI(); }
     if(name === "admin"){ el.adminSection.classList.add("active"); el.tabbar.style.display="none"; }
   }
 
@@ -506,6 +584,84 @@ nav.tabbar{
     node.classList.add(ok ? "ok" : "err", "show");
   }
 
+  function shootConfetti() {
+    var duration = 3000;
+    var end = Date.now() + duration;
+    (function frame() {
+      confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#ffc531', '#1f6b3a', '#e2544a'] });
+      confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#ffc531', '#1f6b3a', '#e2544a'] });
+      if (Date.now() < end) { requestAnimationFrame(frame); }
+    }());
+  }
+
+  function checkMilestones(newPts) {
+    if(!currentUser) return;
+    var notifiedLevel = currentUser.notifiedLevel || 0;
+    
+    var triggerModal = false;
+    var title = "";
+    var sub = "";
+    var levelToSave = notifiedLevel;
+
+    if (newPts >= TARGET_3 && notifiedLevel < TARGET_3) {
+      triggerModal = true;
+      title = "گەورەترین دیاری! 🏆";
+      sub = "تۆ "+TARGET_3+" خاڵت تێپەڕاند! تێکەڵەی ڤی ئای پی گەورەی CRAVAت بردتەوە.";
+      levelToSave = TARGET_3;
+    } else if (newPts >= TARGET_2 && notifiedLevel < TARGET_2) {
+      triggerModal = true;
+      title = "ئاستی دووەم! 🥈";
+      sub = "گەیشتیتە "+TARGET_2+" خاڵ! دیارییەکەت: (٢ جوسی فرێش یان ٢ فرایزی گەورە).";
+      levelToSave = TARGET_2;
+    } else if (newPts >= TARGET_1 && notifiedLevel < TARGET_1) {
+      triggerModal = true;
+      title = "ئاستی یەکەم! 🥉";
+      sub = "گەیشتیتە "+TARGET_1+" خاڵ! دیارییەکەت: (١ شەربەتی فرێش یان ١ فرایزی فرێش).";
+      levelToSave = TARGET_1;
+    }
+
+    if(triggerModal) {
+      currentUser.notifiedLevel = levelToSave;
+      db.ref('users/' + currentUser.key).update({ notifiedLevel: levelToSave });
+      
+      el.milestoneTitle.textContent = title;
+      el.milestoneSub.textContent = sub;
+      el.milestoneModal.classList.add("show");
+      shootConfetti();
+    }
+  }
+
+  el.milestoneCloseBtn.addEventListener("click", function(){ 
+    el.milestoneModal.classList.remove("show"); 
+    goSection("rewards"); 
+  });
+
+  function updateProgressUI(){
+    if(!currentUser) return;
+    var pts = currentUser.points || 0;
+    el.progPts.textContent = pts;
+
+    var maxTarget = TARGET_3;
+    var percent = Math.min(Math.floor((pts / maxTarget) * 100), 100);
+    el.progPercent.textContent = percent + "%";
+    el.progFill.style.width = percent + "%";
+
+    el.m1000.classList.toggle("achieved", pts >= TARGET_1);
+    el.m2000.classList.toggle("achieved", pts >= TARGET_2);
+    el.m3000.classList.toggle("achieved", pts >= TARGET_3);
+
+    if(pts >= TARGET_3){
+      el.giftDescText.innerHTML = "🎉 <b>پیرۆزە!</b> تۆ "+TARGET_3+" خاڵت تێپەڕاند! گەورەترین دیاریی تایبەتی CRAVAت بردتەوە (تێکەڵەی ڤی ئای پی گەورە).";
+    } else if(pts >= TARGET_2){
+      el.giftDescText.innerHTML = "🎁 <b>گەیشتیتە "+TARGET_2+" خاڵ!</b> دیارییەکەت: (٢ جوسی فرێش یان ٢ فرایزی گەورە) بە دڵی خۆت.";
+    } else if(pts >= TARGET_1){
+      el.giftDescText.innerHTML = "⭐ <b>گەیشتیتە "+TARGET_1+" خاڵ!</b> دیارییەکەت: (١ شەربەتی فرێش یان ١ فرایزی فرێش) بە دڵی خۆت.";
+    } else {
+      var left = TARGET_1 - pts;
+      el.giftDescText.innerHTML = "⏳ تەنها <b>" + left + " خاڵت</b> ماوە بۆ ئەوەی بگەیە دیاریی یەکەم ("+TARGET_1+" خاڵ: ١ شەربەت یان فرایز).";
+    }
+  }
+
   function refreshUserUI(){
     if(!currentUser) return;
     el.headerPointsVal.textContent = currentUser.points;
@@ -517,6 +673,7 @@ nav.tabbar{
     el.wheelInfo.textContent = currentUser.spins > 0
       ? "چەرخ ئامادەیە! دوگمەی سوڕاندن دابگرە."
       : "بۆ خستنەکار، سەرەتا کۆدی وەصڵێکی دروست بنووسە.";
+    updateProgressUI();
   }
 
   el.loginBtn.addEventListener("click", function(){
@@ -551,7 +708,7 @@ nav.tabbar{
         currentUser.key = key;
         showMsg(el.authMsg, "بەخێربێیتەوە " + currentUser.name + "!", true);
       } else {
-        currentUser = { name: name, pass: pass, points: STARTING_POINTS, spins: 0 };
+        currentUser = { name: name, pass: pass, points: STARTING_POINTS, spins: 0, notifiedLevel: 0 };
         db.ref('users/' + key).set(currentUser);
         currentUser.key = key;
         showMsg(el.authMsg, "هەژمارت دروستکرا! " + STARTING_POINTS + " خاڵی سەرەتایی وەرگیرا 🎉", true);
@@ -584,8 +741,15 @@ nav.tabbar{
     var code = (el.codeInput.value || "").trim().toUpperCase();
     if(!code){ showMsg(el.codeMsg, "تکایە کۆدەکە بنووسە.", false); return; }
     
-    // تەنها و تەنها ئەگەر لە ناو لیستی VALID_CODES دا هەبێت قبوڵ دەبێت
-    if(VALID_CODES.indexOf(code) === -1){ 
+    var isValid = false;
+    for(var i=0; i<VALID_CODES.length; i++){
+      if(VALID_CODES[i].toUpperCase() === code){
+        isValid = true;
+        break;
+      }
+    }
+
+    if(!isValid){ 
       showMsg(el.codeMsg, "ئەم کۆدە نادروستە. تکایە دووبارە پشکنینی بکەرەوە.", false); 
       return; 
     }
@@ -601,10 +765,13 @@ nav.tabbar{
         currentUser.points += CODE_REWARD_POINTS;
         currentUser.spins += 1;
         db.ref('users/' + currentUser.key).update({ points: currentUser.points, spins: currentUser.spins });
+        
         refreshUserUI();
         showMsg(el.codeMsg, "سەرکەوتوو بوو! " + CODE_REWARD_POINTS + " خاڵ زیادکرا و یەک جەخماوی چەرخ کرایەوە 🎡", true);
         el.codeInput.value = "";
         el.redeemBtn.disabled = false;
+        
+        checkMilestones(currentUser.points);
       }
     });
   });
@@ -656,6 +823,11 @@ nav.tabbar{
 
       refreshUserUI();
       showResult(seg);
+      
+      setTimeout(function(){
+         checkMilestones(currentUser.points);
+      }, 500);
+      
     }, 4300);
   });
 
@@ -692,7 +864,7 @@ nav.tabbar{
   });
 
   el.backToAppBtn.addEventListener("click", function(){
-    goSection("leaderboard");
+    goSection("rewards");
   });
 
   db.ref('users').on('value', function(snapshot) {
@@ -702,37 +874,16 @@ nav.tabbar{
     });
     list.sort(function(a,b){ return b.points - a.points; });
     
-    el.leaderboardList.innerHTML = "";
-    if(list.length === 0){
-      el.leaderboardList.innerHTML = '<div class="lb-empty">هێشتا هیچ بەکارهێنەرێک تۆمار نەکراوە. یەکەم کەس بە!</div>';
-    } else {
-      var rankClass = ["gold","silver","bronze"];
-      var rankBadge = ["🥇","🥈","🥉"];
-      list.forEach(function(u, idx){
-        var row = document.createElement("div");
-        row.className = "lb-row" + (idx < 3 ? " " + rankClass[idx] : "") + (currentUser && u.key === currentUser.key ? " me" : "");
-        var rankContent = idx < 3 ? rankBadge[idx] : (idx+1);
-        
-        var isVip = u.points >= 1000;
-        var vipBadgeHtml = isVip ? '<span class="vip-badge">⭐ VIP</span>' : '';
-        
-        row.innerHTML =
-          '<div class="lb-rank">' + rankContent + '</div>' +
-          '<div class="lb-name">' + escapeHtml(u.name) + vipBadgeHtml + '</div>' +
-          '<div class="lb-pts">' + u.points + ' خاڵ</div>';
-        el.leaderboardList.appendChild(row);
-      });
-    }
-
     el.adminList.innerHTML = "";
     if(list.length === 0){
-      el.adminList.innerHTML = '<div class="lb-empty">هیچ بەکارهێنەرێک نییە.</div>';
+      el.adminList.innerHTML = '<div class="lb-empty" style="text-align:center; color:var(--text-dim); padding:10px;">هیچ بەکارهێنەرێک نییە.</div>';
     } else {
       list.forEach(function(u){
         var adminRow = document.createElement("div");
         adminRow.className = "lb-row";
+        adminRow.style.display = "flex"; adminRow.style.alignItems = "center"; adminRow.style.justifyContent = "space-between"; adminRow.style.padding = "11px 10px"; adminRow.style.borderRadius = "14px"; adminRow.style.background = "rgba(255,255,255,0.02)"; adminRow.style.marginBottom = "8px"; adminRow.style.border = "1px solid rgba(255,255,255,0.04)";
         adminRow.innerHTML =
-          '<div class="lb-name"><b>' + escapeHtml(u.name) + '</b> <span style="font-size:11px; color:var(--text-dim);">(' + u.points + ' خاڵ)</span></div>' +
+          '<div style="font-size:13.5px; font-weight:700;"><b>' + escapeHtml(u.name) + '</b> <span style="font-size:11px; color:var(--text-dim);">(' + u.points + ' خاڵ)</span></div>' +
           '<button class="btn btn-danger" data-key="' + u.key + '">سڕینەوە</button>';
         
         adminRow.querySelector("button").addEventListener("click", function(){
@@ -751,39 +902,20 @@ nav.tabbar{
     
     el.adminSpinHistory.innerHTML = "";
     if(keys.length === 0){
-      el.adminSpinHistory.innerHTML = '<div class="lb-empty">هێشتا هیچ کەسێک چەرخی نەسوڕاندووە.</div>';
+      el.adminSpinHistory.innerHTML = '<div class="lb-empty" style="text-align:center; color:var(--text-dim); padding:10px;">هێشتا هیچ کەسێک چەرخی نەسوڕاندووە.</div>';
       return;
     }
 
     keys.forEach(function(k){
       var h = histories[k];
       var row = document.createElement("div");
-      row.className = "lb-row";
+      row.style.display = "flex"; row.style.alignItems = "center"; row.style.justifyContent = "space-between"; row.style.padding = "11px 10px"; row.style.borderRadius = "14px"; row.style.background = "rgba(255,255,255,0.02)"; row.style.marginBottom = "8px"; row.style.border = "1px solid rgba(255,255,255,0.04)";
       row.innerHTML =
-        '<div class="lb-name"><b>' + escapeHtml(h.name) + '</b><br><span style="font-size:11px; color:var(--text-dim);">' + (h.time || '') + '</span></div>' +
-        '<div class="lb-pts" style="color:var(--yellow-2); font-size:13px;">' + escapeHtml(h.result) + '</div>';
+        '<div style="font-size:13.5px;"><b>' + escapeHtml(h.name) + '</b><br><span style="font-size:11px; color:var(--text-dim);">' + (h.time || '') + '</span></div>' +
+        '<div style="color:var(--yellow-2); font-size:13px; font-weight:800;">' + escapeHtml(h.result) + '</div>';
       el.adminSpinHistory.appendChild(row);
     });
   });
-
-  function checkVipReward(){
-    if(!currentUser) return;
-    if(currentUser.points >= 1000 && !currentUser.vipRewarded){
-      currentUser.vipRewarded = true;
-      db.ref('users/' + currentUser.key).update({ vipRewarded: true });
-      
-      el.resultEmoji.textContent = "👑";
-      el.resultTitle.textContent = "پیرۆزە! گەیشتیتە ١٠٠٠ خاڵ!";
-      el.resultSub.textContent = "تۆ بوویتە VIP! دیارییەکەی ئێستا بردتەوە: (١ شەربەتی فرێش یان ١ فرایزی فرێش) بە دڵی خۆت! ئەم پەیامە پیشانی کارمەند بدە.";
-      el.resultOverlay.classList.add("show");
-    }
-  }
-
-  var originalRefresh = refreshUserUI;
-  refreshUserUI = function(){
-    originalRefresh();
-    checkVipReward();
-  };
 
   function escapeHtml(s){
     return String(s).replace(/[&<>"']/g, function(c){
