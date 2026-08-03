@@ -95,7 +95,7 @@ main{max-width:520px; margin:0 auto; padding:18px 16px 8px;}
 
 .card{
   position:relative; background:linear-gradient(160deg, var(--charcoal-3), var(--card));
-  border-radius:var(--radius); padding:18px; margin-bottom:16px;
+  border-radius:50px; padding:18px; margin-bottom:16px;
   border:1px solid rgba(255,255,255,0.06);
   box-shadow: 0 1px 0 rgba(255,255,255,0.06) inset, 0 14px 30px rgba(0,0,0,0.55), 0 2px 0 rgba(0,0,0,0.6);
 }
