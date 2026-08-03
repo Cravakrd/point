@@ -279,7 +279,7 @@ nav.tabbar{
 <header class="topbar">
   <div class="brand">
     <!-- لێرەدا لۆگۆکەی تۆم داناوە کە دروستم کرد -->
-    <img src="vv.png" alt="CRAVA logo" onerror="this.style.display='none'">
+    <img src="bb.png" alt="CRAVA logo" onerror="this.style.display='none'">
     <div><div class="brand-sub">سۆران · فرێش جوس و فرایز</div></div>
   </div>
   <div class="points-pill" id="headerPoints">
