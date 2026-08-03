@@ -209,19 +209,37 @@ main{max-width:520px; margin:0 auto; padding:18px 16px 8px;}
 .milestone-label {
   font-size: 11.5px; font-weight: 800; color: var(--text-dim); transition: color 0.3s;
 }
-/* 3D Gift Icon Styling */
+
+/* 3D Gift Icon Styling with Animation */
 .gift-icon-img {
-  width: 38px; 
-  height: 38px; 
+  width: 44px; 
+  height: 44px; 
   display: block; 
   margin: 6px auto 0; 
-  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.5));
+  animation: float 3s ease-in-out infinite; /* جووڵەی بەردەوام */
+  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
+
+/* ئەنیمەیشنی سەرکەوتن و دابەزینی سندوقەکە */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+}
+
 .milestone.achieved .milestone-label { color: var(--yellow-2); }
+
+/* کاتێک سندوقەکە دەکرێتەوە جووڵەکەی دەگۆڕێت بۆ بازدان */
 .milestone.achieved .gift-icon-img {
-  transform: scale(1.3) translateY(-4px);
-  filter: drop-shadow(0 8px 12px rgba(255,197,49,0.7));
+  width: 52px;
+  height: 52px;
+  filter: drop-shadow(0 0 15px rgba(255,197,49,0.8));
+  animation: celebrateBounce 2s infinite; 
+}
+
+@keyframes celebrateBounce {
+  0%, 100% { transform: translateY(0) scale(1.05); }
+  50% { transform: translateY(-8px) scale(1.1) rotate(5deg); }
 }
 
 .gift-box-desc {
@@ -362,15 +380,16 @@ nav.tabbar{
         <div class="milestones">
           <div class="milestone" id="m1000">
             <div class="milestone-dot"></div>
-            <div class="milestone-label">١٠ خاڵ<img src="https://img.icons8.com/3d-fluency/94/gift.png" crossorigin="anonymous" class="gift-icon-img" alt="3D Gift"></div>
+            <!-- وێنەی سێ دووری بێ باکگراوند -->
+            <div class="milestone-label">١٠ خاڵ<img src="https://cdn.jsdelivr.net/gh/Tarikul-Islam-Anik/Animated-Fluent-Emojis/Emojis/Objects/Wrapped%20Present.png" crossorigin="anonymous" class="gift-icon-img" alt="3D Gift"></div>
           </div>
           <div class="milestone" id="m2000">
             <div class="milestone-dot"></div>
-            <div class="milestone-label">٢٠ خاڵ<img src="https://img.icons8.com/3d-fluency/94/gift.png" crossorigin="anonymous" class="gift-icon-img" alt="3D Gift"></div>
+            <div class="milestone-label">٢٠ خاڵ<img src="https://cdn.jsdelivr.net/gh/Tarikul-Islam-Anik/Animated-Fluent-Emojis/Emojis/Objects/Wrapped%20Present.png" crossorigin="anonymous" class="gift-icon-img" alt="3D Gift"></div>
           </div>
           <div class="milestone" id="m3000">
             <div class="milestone-dot"></div>
-            <div class="milestone-label">٣٠ خاڵ<img src="https://img.icons8.com/3d-fluency/94/gift.png" crossorigin="anonymous" class="gift-icon-img" alt="3D Gift"></div>
+            <div class="milestone-label">٣٠ خاڵ<img src="https://cdn.jsdelivr.net/gh/Tarikul-Islam-Anik/Animated-Fluent-Emojis/Emojis/Objects/Wrapped%20Present.png" crossorigin="anonymous" class="gift-icon-img" alt="3D Gift"></div>
           </div>
         </div>
       </div>
@@ -429,9 +448,7 @@ nav.tabbar{
 <!-- Milestone Celebration Pop-up -->
 <div class="result-overlay" id="milestoneModal">
   <div class="result-card" style="border-color: #ffc531; background: linear-gradient(160deg, #1c2420, #0c1310);">
-    <!-- وێنەی سێ دووری لە شاشەی ئاهەنگگێڕانەکە -->
-    <img src="https://img.icons8.com/3d-fluency/94/gift.png" crossorigin="anonymous" class="result-emoji milestone-celebrate" id="milestoneEmoji" style="width: 85px; height: 85px; display: block; margin: 0 auto 10px;" alt="3D Gift">
-    
+    <img src="https://cdn.jsdelivr.net/gh/Tarikul-Islam-Anik/Animated-Fluent-Emojis/Emojis/Objects/Wrapped%20Present.png" crossorigin="anonymous" class="result-emoji milestone-celebrate" id="milestoneEmoji" style="width: 85px; height: 85px; display: block; margin: 0 auto 10px;" alt="3D Gift">
     <h3 class="result-title" id="milestoneTitle" style="font-size: 26px;">پیرۆزە!</h3>
     <p class="result-sub" id="milestoneSub" style="font-size: 15px; font-weight: 700; color: #fff;">ئاستێکی نوێت بڕی و دیارییەکت بردەوە!</p>
     <button class="btn btn-primary" id="milestoneCloseBtn" style="font-size: 16px;">بەڕێوەیە بۆ وەرگرتن!</button>
@@ -475,7 +492,6 @@ nav.tabbar{
     "CRAVA7M2P9B6","1XKCRAVA4P5X","8VQ23B9CRAVA","CRAVA5PX41K7"
   ];
 
-  // لێرەدا خاڵەکانمان گۆڕی بۆ سیستەمی نوێ
   var CODE_REWARD_POINTS = 1;
   var STARTING_POINTS = 0;
   var SESSION_KEY = "crava_session_v1";
@@ -484,14 +500,13 @@ nav.tabbar{
   var TARGET_2 = 20;
   var TARGET_3 = 30;
 
-  // بەشە نوێیەکانی چەرخەکە
   var WHEEL_SEGMENTS = [
-    { label:"دووبارە هەوڵبدەوە", type:"none",     points:0, weight:45 }, 
-    { label:"+١ خاڵ",            type:"points",   points:1, weight:35 },
-    { label:"داشکاندنی ١٠٪",     type:"discount", points:0, weight:10 },
-    { label:"+٢ خاڵ",            type:"points",   points:2, weight:7  },
-    { label:"فرایزی خۆڕایی",     type:"fries",    points:0, weight:2  },
-    { label:"جوسی خۆڕایی",       type:"juice",    points:0, weight:1  }
+    { label:"دووبارە هەوڵبدەوە", type:"none",   points:0, weight:45 }, 
+    { label:"+١ خاڵ",            type:"points", points:1, weight:35 },
+    { label:"+٣ خاڵ",            type:"points", points:3, weight:10 },
+    { label:"+٢ خاڵ",            type:"points", points:2, weight:7  },
+    { label:"فرایزی خۆڕایی",     type:"fries",  points:0, weight:2  },
+    { label:"جوسی خۆڕایی",       type:"juice",  points:0, weight:1  }
   ];
   
   var SEG_COUNT = WHEEL_SEGMENTS.length;
@@ -839,9 +854,6 @@ nav.tabbar{
     if(seg.type === "points"){
       emoji = "💰"; title = "براوەی " + seg.points + " خاڵ بوویت!";
       sub = "خاڵەکانت زیادکران بۆ ژمارەی گشتیت.";
-    } else if(seg.type === "discount"){
-      emoji = "🏷️"; title = "داشکاندنی ١٠٪ ت بردەوە!";
-      sub = "لە کڕینی داهاتووتدا ئەم پەیامە پیشانی کارمەندەکە بدە.";
     } else if(seg.type === "juice"){
       emoji = "🥤"; title = "جوسی خۆڕایی بردتەوە!";
       sub = "ئەم پەیامە بۆ کارمەندی خشتەکە پیشان بدە.";
