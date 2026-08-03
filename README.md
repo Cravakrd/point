@@ -12,6 +12,9 @@
 <!-- Confetti Library -->
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
+<!-- Three.js Library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
 <style>
 :root{
   --green:#1f6b3a;
@@ -210,36 +213,20 @@ main{max-width:520px; margin:0 auto; padding:18px 16px 8px;}
   font-size: 11.5px; font-weight: 800; color: var(--text-dim); transition: color 0.3s;
 }
 
-/* 3D Gift Icon Styling with Animation */
-.gift-icon-img {
-  width: 44px; 
-  height: 44px; 
-  display: block; 
-  margin: 6px auto 0; 
-  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.5));
-  animation: float 3s ease-in-out infinite; /* جووڵەی بەردەوام */
-  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+/* Three.js Container Styles */
+.gift-3d-wrap {
+  width: 60px;
+  height: 60px;
+  margin: 6px auto 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
-
-/* ئەنیمەیشنی سەرکەوتن و دابەزینی سندوقەکە */
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-6px); }
-}
-
 .milestone.achieved .milestone-label { color: var(--yellow-2); }
-
-/* کاتێک سندوقەکە دەکرێتەوە جووڵەکەی دەگۆڕێت بۆ بازدان */
-.milestone.achieved .gift-icon-img {
-  width: 52px;
-  height: 52px;
-  filter: drop-shadow(0 0 15px rgba(255,197,49,0.8));
-  animation: celebrateBounce 2s infinite; 
-}
-
-@keyframes celebrateBounce {
-  0%, 100% { transform: translateY(0) scale(1.05); }
-  50% { transform: translateY(-8px) scale(1.1) rotate(5deg); }
+.milestone.achieved .gift-3d-wrap {
+  transform: scale(1.3) translateY(-4px);
+  filter: drop-shadow(0 8px 15px rgba(255,197,49,0.5));
 }
 
 .gift-box-desc {
@@ -278,8 +265,6 @@ nav.tabbar{
   box-shadow: 0 20px 40px rgba(0,0,0,0.6);
 }
 .result-emoji{ font-size:55px; margin-bottom:10px; display: inline-block; }
-.milestone-celebrate { animation: bounceGlow 1.5s infinite; }
-@keyframes bounceGlow { 0%, 100% { transform: translateY(0); filter: drop-shadow(0 0 10px rgba(255,197,49,0.5)); } 50% { transform: translateY(-10px); filter: drop-shadow(0 0 25px rgba(255,197,49,0.9)); } }
 .result-title{ font-size:22px; font-weight:800; margin:0 0 8px; color:var(--yellow-2); }
 .result-sub{ font-size:14px; color:var(--text-dim); margin:0 0 22px; line-height: 1.6; }
 
@@ -380,16 +365,16 @@ nav.tabbar{
         <div class="milestones">
           <div class="milestone" id="m1000">
             <div class="milestone-dot"></div>
-            <!-- وێنەی سێ دووری بێ باکگراوند -->
-            <div class="milestone-label">١٠ خاڵ<img src="https://cdn.jsdelivr.net/gh/Tarikul-Islam-Anik/Animated-Fluent-Emojis/Emojis/Objects/Wrapped%20Present.png" crossorigin="anonymous" class="gift-icon-img" alt="3D Gift"></div>
+            <!-- کۆنترۆڵکەری سێ دووری (Three.js Container) -->
+            <div class="milestone-label">١٠ خاڵ<div class="gift-3d-wrap" id="gift-3d-1"></div></div>
           </div>
           <div class="milestone" id="m2000">
             <div class="milestone-dot"></div>
-            <div class="milestone-label">٢٠ خاڵ<img src="https://cdn.jsdelivr.net/gh/Tarikul-Islam-Anik/Animated-Fluent-Emojis/Emojis/Objects/Wrapped%20Present.png" crossorigin="anonymous" class="gift-icon-img" alt="3D Gift"></div>
+            <div class="milestone-label">٢٠ خاڵ<div class="gift-3d-wrap" id="gift-3d-2"></div></div>
           </div>
           <div class="milestone" id="m3000">
             <div class="milestone-dot"></div>
-            <div class="milestone-label">٣٠ خاڵ<img src="https://cdn.jsdelivr.net/gh/Tarikul-Islam-Anik/Animated-Fluent-Emojis/Emojis/Objects/Wrapped%20Present.png" crossorigin="anonymous" class="gift-icon-img" alt="3D Gift"></div>
+            <div class="milestone-label">٣٠ خاڵ<div class="gift-3d-wrap" id="gift-3d-3"></div></div>
           </div>
         </div>
       </div>
@@ -448,7 +433,8 @@ nav.tabbar{
 <!-- Milestone Celebration Pop-up -->
 <div class="result-overlay" id="milestoneModal">
   <div class="result-card" style="border-color: #ffc531; background: linear-gradient(160deg, #1c2420, #0c1310);">
-    <img src="https://cdn.jsdelivr.net/gh/Tarikul-Islam-Anik/Animated-Fluent-Emojis/Emojis/Objects/Wrapped%20Present.png" crossorigin="anonymous" class="result-emoji milestone-celebrate" id="milestoneEmoji" style="width: 85px; height: 85px; display: block; margin: 0 auto 10px;" alt="3D Gift">
+    <!-- پۆپ-ئەپی 3D -->
+    <div id="gift-3d-modal" style="width: 110px; height: 110px; margin: 0 auto 10px;"></div>
     <h3 class="result-title" id="milestoneTitle" style="font-size: 26px;">پیرۆزە!</h3>
     <p class="result-sub" id="milestoneSub" style="font-size: 15px; font-weight: 700; color: #fff;">ئاستێکی نوێت بڕی و دیارییەکت بردەوە!</p>
     <button class="btn btn-primary" id="milestoneCloseBtn" style="font-size: 16px;">بەڕێوەیە بۆ وەرگرتن!</button>
@@ -458,6 +444,102 @@ nav.tabbar{
 <script>
 (function(){
   "use strict";
+
+  // فەنکشنی ڕێندەرکردنی Three.js بۆ سندوقە دیارییەکان
+  function createThreeJSGift(containerId, size) {
+    var container = document.getElementById(containerId);
+    if(!container) return null;
+
+    var scene = new THREE.Scene();
+    var camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+    camera.position.z = 4.5;
+    camera.position.y = 1;
+    camera.lookAt(0,0,0);
+
+    var renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    renderer.setSize(size, size);
+    container.appendChild(renderer.domElement);
+
+    var group = new THREE.Group();
+
+    // جەستەی سندوقەکە (سوور)
+    var boxGeo = new THREE.BoxGeometry(1.3, 1.3, 1.3);
+    var boxMat = new THREE.MeshPhongMaterial({ color: 0xe2544a, shininess: 80 }); 
+    var box = new THREE.Mesh(boxGeo, boxMat);
+    group.add(box);
+
+    // شریتی ئاسۆیی (زەرد)
+    var ribGeo1 = new THREE.BoxGeometry(1.35, 1.35, 0.25);
+    var ribMat = new THREE.MeshPhongMaterial({ color: 0xffc531, shininess: 100 }); 
+    var rib1 = new THREE.Mesh(ribGeo1, ribMat);
+    group.add(rib1);
+
+    // شریتی ستوونی (زەرد)
+    var ribGeo2 = new THREE.BoxGeometry(0.25, 1.35, 1.35);
+    var rib2 = new THREE.Mesh(ribGeo2, ribMat);
+    group.add(rib2);
+
+    // گرێی سەرەوە (پێچی شریتەکە)
+    var bowGeo = new THREE.TorusGeometry(0.25, 0.08, 8, 16);
+    var bow1 = new THREE.Mesh(bowGeo, ribMat);
+    bow1.position.y = 0.7;
+    bow1.rotation.y = Math.PI / 4;
+    group.add(bow1);
+
+    var bow2 = new THREE.Mesh(bowGeo, ribMat);
+    bow2.position.y = 0.7;
+    bow2.rotation.y = -Math.PI / 4;
+    group.add(bow2);
+
+    scene.add(group);
+
+    // ڕووناکی
+    var ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+    scene.add(ambientLight);
+    var dirLight = new THREE.DirectionalLight(0xffffff, 0.6);
+    dirLight.position.set(5, 10, 7);
+    scene.add(dirLight);
+
+    var obj = {
+      group: group,
+      isAchieved: false,
+      time: Math.random() * 100 // بۆ ئەوەی هەر یەکێکیان کاتی جیاوازی هەبێت
+    };
+
+    function animate() {
+      requestAnimationFrame(animate);
+      obj.time += 0.04;
+
+      if (obj.isAchieved) {
+        // جووڵەی خێرا و ئاهەنگگێڕان کاتێک بەدەست دەهێنرێت
+        group.rotation.y += 0.05;
+        group.position.y = Math.sin(obj.time * 2.5) * 0.4;
+        group.rotation.z = Math.sin(obj.time * 2) * 0.1;
+      } else {
+        // جووڵەی هێواش و ئارام لە شوێنی خۆی
+        group.rotation.y += 0.01;
+        group.position.y = Math.sin(obj.time) * 0.1;
+      }
+
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    return obj;
+  }
+
+  // دروستکردنی سندوقەکان
+  var threeGifts = {};
+  window.addEventListener('DOMContentLoaded', function() {
+    threeGifts.g10 = createThreeJSGift("gift-3d-1", 60);
+    threeGifts.g20 = createThreeJSGift("gift-3d-2", 60);
+    threeGifts.g30 = createThreeJSGift("gift-3d-3", 60);
+    threeGifts.modal = createThreeJSGift("gift-3d-modal", 110);
+    if(threeGifts.modal) threeGifts.modal.isAchieved = true; // بۆکسەکەی ناو پۆپ-ئەپەکە هەمیشە ئاهەنگگێڕانە
+  });
+
+
+  // Firebase Configuration
   const firebaseConfig = {
     apiKey: "AIzaSyC_6pie74vrvFIYJDT0QOaQeLaZO8fSWOo",
     authDomain: "crava-65b13.firebaseapp.com",
@@ -667,6 +749,11 @@ nav.tabbar{
     el.m1000.classList.toggle("achieved", pts >= TARGET_1);
     el.m2000.classList.toggle("achieved", pts >= TARGET_2);
     el.m3000.classList.toggle("achieved", pts >= TARGET_3);
+
+    // ئەپدەیتکردنی جووڵەی 3D یەکان بەپێی ئەوەی بەدەستهاتوون یان نا
+    if(threeGifts.g10) threeGifts.g10.isAchieved = (pts >= TARGET_1);
+    if(threeGifts.g20) threeGifts.g20.isAchieved = (pts >= TARGET_2);
+    if(threeGifts.g30) threeGifts.g30.isAchieved = (pts >= TARGET_3);
 
     if(pts >= TARGET_3){
       el.giftDescText.innerHTML = "🎉 <b>پیرۆزە!</b> تۆ "+TARGET_3+" خاڵت تێپەڕاند! گەورەترین دیاریی تایبەتی CRAVAت بردتەوە (تێکەڵەی ڤی ئای پی گەورە).";
